@@ -1,0 +1,3 @@
+.state
+*.swp
+newrelic_agent.log

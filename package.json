@@ -1,0 +1,21 @@
+{
+  "name": "harmony-home",
+  "version": "1.0.0",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "hapi": "^16.5.2",
+    "harmonyHubCLI": "^1.1.0",
+    "harmonyhubjs-client": "^1.1.10",
+    "newrelic": "^2.1.0",
+    "q": "^1.5.0",
+    "redis": "^2.8.0",
+    "underscore": "^1.8.3",
+    "underscore.string": "^3.3.4"
+  }
+}
