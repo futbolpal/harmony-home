@@ -8,9 +8,10 @@ const Hapi = require('hapi');
 
 const HarmonyUtils = require('harmony-hub-util');
 const HubState = require('./hub_state');
+const RedisClient = require('./redis_client');
+
 const Intents = require('./intents');
 const ClimateControl = require('./handlers/climate_control');
-const RedisClient = require('./redis_client');
 
 // Create a server with a host and port
 const server = new Hapi.Server();
