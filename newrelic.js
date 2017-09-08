@@ -10,7 +10,7 @@ exports.config = {
   /**
    * Array of application names.
    */
-  app_name: ['Harmony Home'],
+  app_name: [process.env.HEROKU_APP_NAME || "Harmony Home"],
   /**
    * Your New Relic license key.
    */

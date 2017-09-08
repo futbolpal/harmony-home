@@ -12,14 +12,16 @@
     "NEW_RELIC_LOG": {
       "required": true
     },
-    "REDISCLOUD_URL": {
+    "HEROKU_APP_NAME": {
+      "required": true
+    },
+    "HEROKU_PARENT_APP_NAME": {
       "required": true
     }
   },
   "formation": {
   },
   "addons": [
-    "newrelic",
     "rediscloud"
   ],
   "buildpacks": [
