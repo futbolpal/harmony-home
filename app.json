@@ -6,9 +6,6 @@
     "IP": {
       "required": true
     },
-    "NEW_RELIC_LICENSE_KEY": {
-      "required": true
-    },
     "NEW_RELIC_LOG": {
       "required": true
     },
@@ -22,6 +19,7 @@
   "formation": {
   },
   "addons": [
+    "newrelic",
     "rediscloud"
   ],
   "buildpacks": [
