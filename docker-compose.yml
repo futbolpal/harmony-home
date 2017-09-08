@@ -1,6 +1,5 @@
 service: &default
   build: .
-  command: 'npm start'
   env_file: .env
   links:
     - "redis"
