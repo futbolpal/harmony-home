@@ -1,3 +1,4 @@
 .state
 *.swp
+.env*
 newrelic_agent.log
