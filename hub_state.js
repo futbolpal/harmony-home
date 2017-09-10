@@ -33,7 +33,7 @@ hubState.refresh = () => {
   }
   hubState.hub._harmonyClient.getAvailableCommands().then(function(response){
     console.log("Refreshed state");
-    hubState.state.commands = response; 
+    hubState.state.devices = response.device; 
     hubState.save();
   });
 };
@@ -58,7 +58,7 @@ hubState.save = () => {
 };
 
 hubState.deviceById = (deviceId) => {
-  return hubState.state.commands.device.find(function (dev) {
+  return hubState.state.devices.find(function (dev) {
     if (dev.id.toString() == deviceId) {
       return dev;
     }
@@ -66,7 +66,7 @@ hubState.deviceById = (deviceId) => {
 }
 
 hubState.deviceByName = (deviceName) => {
-  return hubState.state.commands.device.find(function (dev) {
+  return hubState.state.devices.find(function (dev) {
     if (dev.label == deviceName) {
       return dev;
     }
