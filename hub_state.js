@@ -1,6 +1,8 @@
 'use strict';
 
-const redis_client = require('./redis_client')
+const HarmonyUtils = require('harmony-hub-util');
+const RedisClient = require('./redis_client')
+
 const hubState = {
   hub : null,
   state : {
@@ -37,8 +39,8 @@ hubState.refresh = () => {
 };
 
 hubState.load = () => {
-  if(redis_client.connected){
-    redis_client.get("hubState", (error, reply) => {
+  if(RedisClient.connected){
+    RedisClient.get("hubState", (error, reply) => {
       hubState.state = JSON.parse(reply);
       console.log("Configuration Loaded");
     });
@@ -48,8 +50,8 @@ hubState.load = () => {
 }
 
 hubState.save = () => {
-  if(redis_client.connected){
-    redis_client.set("hubState", JSON.stringify(hubState.state));
+  if(RedisClient.connected){
+    RedisClient.set("hubState", JSON.stringify(hubState.state));
   } else {
     console.log("Redis not connected");
   }
@@ -70,5 +72,25 @@ hubState.deviceByName = (deviceName) => {
     }
   });
 }
+
+// Connect to harmony
+new HarmonyUtils(process.env.IP || '192.168.0.23').then((hutils) => {
+  console.log("Connected to harmony hub");
+  hubState.hub = hutils
+
+  // Update commands
+  setInterval(hubState.refresh, process.env.REFRESH_HUB || 60000); 
+  setInterval(() => {
+    hubState.hub.readCurrentActivity().then((response) => { 
+      if(response == 'PowerOff'){
+        console.log("Activity was " + response) 
+        hubState.hub.executeActivity('Default').then((response) => { console.log(response) });;
+      }
+    });
+  }, 5000);
+
+});
+
+RedisClient.on("ready", () => { hubState.load() });
 
 module.exports = hubState;
