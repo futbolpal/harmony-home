@@ -46,7 +46,7 @@ hubState.load = () => {
   if(RedisClient.connected){
     RedisClient.get("hubState", (error, reply) => {
       hubState.state = JSON.parse(reply) || {};
-      console.log("Configuration Loaded: ", reply);
+      console.log("Configuration Loaded");
     });
   } else {
     console.log("Redis not connected yet");
