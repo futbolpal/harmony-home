@@ -6,6 +6,7 @@ const HubState = require('./hub_state');
 
 const Intents = require('./intents');
 const ClimateControl = require('./handlers/climate_control');
+const TvControl = require('./handlers/tv_control');
 
 const HomeActions = {}
 
@@ -19,7 +20,9 @@ HomeActions.register = (server) => {
       console.log(request.payload);
       if(Intents.INTENT_GROUP_CLIMATE_CONTROL.includes(intentName)){
         return ClimateControl(HubState, intentName, request, reply);
-      } 
+      } else if(Intents.INTENT_GROUP_TV_CONTROL.includes(intentName)){
+        return TvControl(HubState, intentName, request, reply);
+      }
     }
   });
 }

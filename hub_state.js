@@ -1,5 +1,6 @@
 'use strict';
 
+const Q = require('q');
 const HarmonyUtils = require('harmony-hub-util');
 const RedisClient = require('./redis_client')
 
@@ -7,7 +8,6 @@ const hubState = {
   hub : null,
   state : {
     simulate : false,
-    commands : null,
     climate_control : {
       online : false,
       temp : 70
@@ -28,20 +28,24 @@ hubState.executeCommand = (is_device_cmd, act_or_dev_name, command) => {
 }
  
 hubState.refresh = () => {
+  let deferred = Q.defer();
+
   if(!hubState.hub){
-    return console.log("Hub not initialized");
+    deferred.reject("Hub not initialized");
+  } else {
+    hubState.hub._harmonyClient.getAvailableCommands().then(function(response){
+      hubState.state.devices = response.device; 
+      hubState.save();
+      deferred.resolve();
+    });
   }
-  hubState.hub._harmonyClient.getAvailableCommands().then(function(response){
-    console.log("Refreshed state");
-    hubState.state.devices = response.device; 
-    hubState.save();
-  });
+  return deferred.promise;
 };
 
 hubState.load = () => {
   if(RedisClient.connected){
     RedisClient.get("hubState", (error, reply) => {
-      hubState.state = JSON.parse(reply);
+      hubState.state = JSON.parse(reply) || {};
       console.log("Configuration Loaded");
     });
   } else {
@@ -78,7 +82,7 @@ new HarmonyUtils(process.env.IP || '192.168.0.23').then((hutils) => {
   console.log("Connected to harmony hub");
   hubState.hub = hutils
 
-  // Update commands
+  hubState.refresh();
   setInterval(hubState.refresh, process.env.REFRESH_HUB || 60000); 
   setInterval(() => {
     hubState.hub.readCurrentActivity().then((response) => { 
