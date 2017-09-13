@@ -22,11 +22,11 @@ Intents.INTENT_GROUP_TV_CONTROL = [
 const handleTvControl = (hubState, intentName, request, reply) => {
   let device = hubState.deviceByName("TV");
   let intentMap = {};
-  intentMap[INTENT_TV_CONTROL_POWER_OFF] = { command : "PowerOff", response: { "speech" : "TV is now off"} };
-  intentMap[INTENT_TV_CONTROL_POWER_ON] = { command : "PowerOn", response: { "speech" : "TV is now on"} };
-  intentMap[INTENT_TV_CONTROL_VOLUME_UP] =  { command : "VolumeUp" };
-  intentMap[INTENT_TV_CONTROL_VOLUME_DOWN] = { command : "VolumeDown" };
-  intentMap[INTENT_TV_CONTROL_MUTE] = { command : "Mute" };
+  intentMap[Intents.INTENT_TV_CONTROL_POWER_OFF] = { command : "PowerOff", response: { "speech" : "TV is now off"} };
+  intentMap[Intents.INTENT_TV_CONTROL_POWER_ON] = { command : "PowerOn", response: { "speech" : "TV is now on"} };
+  intentMap[Intents.INTENT_TV_CONTROL_VOLUME_UP] =  { command : "VolumeUp" };
+  intentMap[Intents.INTENT_TV_CONTROL_VOLUME_DOWN] = { command : "VolumeDown" };
+  intentMap[Intents.INTENT_TV_CONTROL_MUTE] = { command : "Mute" };
 
   let command = intentMap[intentName].command;
   let response = intentMap[intentName].response;
