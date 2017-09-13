@@ -29,9 +29,9 @@ const handleTvControl = (hubState, intentName, request, reply) => {
   intentMap[Intents.INTENT_TV_CONTROL_MUTE] = { command : "Mute" };
 
   let command = intentMap[intentName].command;
-  let response = intentMap[intentName].response;
+  let intentResponse = intentMap[intentName].response;
   return hubState.executeCommand(true, device.label, command).then((response) => {
-    return reply(response);
+    return reply(intentResponse);
   });
 };
 
