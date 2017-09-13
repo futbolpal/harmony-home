@@ -1,0 +1,69 @@
+{
+  "userSays": [
+    {
+      "id": "7ec25461-d9d6-4a9e-92fd-07c9cde9b7d2",
+      "data": [
+        {
+          "text": "Turn on television"
+        }
+      ],
+      "isTemplate": false,
+      "count": 0
+    },
+    {
+      "id": "cfab4df5-61e0-49e0-8959-644c316c2d8f",
+      "data": [
+        {
+          "text": "Turn on the television"
+        }
+      ],
+      "isTemplate": false,
+      "count": 0
+    },
+    {
+      "id": "94a2230f-85dc-40b8-90dc-344649a1559c",
+      "data": [
+        {
+          "text": "Turn on the tv"
+        }
+      ],
+      "isTemplate": false,
+      "count": 0
+    },
+    {
+      "id": "fc4056d9-50f0-4125-aab6-21c66a414c31",
+      "data": [
+        {
+          "text": "Turn on tv"
+        }
+      ],
+      "isTemplate": false,
+      "count": 0
+    }
+  ],
+  "id": "15fc9fe5-b943-468e-b2ca-f9bf0a689254",
+  "name": "TV Control Power On",
+  "auto": true,
+  "contexts": [],
+  "responses": [
+    {
+      "resetContexts": false,
+      "affectedContexts": [],
+      "parameters": [],
+      "messages": [
+        {
+          "type": 0,
+          "speech": []
+        }
+      ],
+      "defaultResponsePlatforms": {
+        "google": true
+      }
+    }
+  ],
+  "priority": 500000,
+  "webhookUsed": true,
+  "webhookForSlotFilling": true,
+  "fallbackIntent": false,
+  "events": []
+}
