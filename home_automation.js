@@ -7,39 +7,98 @@ const HubState = require('./hub_state');
 const HomeAutomation = {}
 
 HomeAutomation.register = (server) => {
-  server.route({
-    method: 'POST',
-    path: '/ha',
-    handler: (request, reply) => {
-      for(let i = 0; i < request.body.inputs.length; i++){
-        let input = request.body.inputs[i];
-        let intent = input.intent;
-        switch(intent){
-          case "actions.devices.SYNC":
-            return HomeAutomation.sync({
-              requestId: request.body.requestId
-            }, reply);
-          case "actions.devices.QUERY":
-            return HomeAutomation.query({
-              requestId: request.body.requestId,
-              devices: input.payload.devices
-            }, reply);
-          case "actions.devices.EXEC":
-            return HomeAutomation.exec({
-              requestId: request.body.requestId,
-              commands: input.payload.commands
-            }, reply);
-        }
-      }
-    }
-  });
+  server.post('/ha', handleHomeAutomation);
 }
 
-HomeAutomation.sync = ()=> {
+const handleHomeAutomation = (request, response) => {
+  console.log("------------  New Smart Device Action ---------------");
+  console.log(request.headers);
+  console.log(request.body);
+  for(let i = 0; i < request.body.inputs.length; i++){
+    let input = request.body.inputs[i];
+    let intent = input.intent;
+    switch(intent){
+      case "action.devices.SYNC":
+        return HomeAutomation.sync({
+          requestId: request.body.requestId
+        }, reply);
+      case "action.devices.QUERY":
+        return HomeAutomation.query({
+          requestId: request.body.requestId,
+          devices: input.body.devices
+        }, reply);
+      case "action.devices.EXEC":
+        return HomeAutomation.exec({
+          requestId: request.body.requestId,
+          commands: input.body.commands
+        }, reply);
+    }
+  }
 }
-HomeAutomation.query = ()=> {
+
+HomeAutomation.sync = (data, reply)=> {
+  let deviceProps = {
+    requestId: data.requestId,
+    payload: {
+      devices: [
+        new HarmonyDevice('TV', 'action.devices.types.LIGHT',{
+          traits : [ "action.devices.traits.OnOff" ]
+        }).json,
+        new HarmonyDevice('Friedrich Climate Control', 'action.devices.types.THERMOSTAT', {
+          traits : [ "action.devices.traits.TemperatureSetting" ],
+          attributes : {
+            availableThermostatModes: "off,on",
+            thermostatTemperatureUnit: "F"
+          }
+        }).json
+      ]
+    }
+  }
+  console.log("SYNC response: ", deviceProps.payload.devices);
+  return reply(deviceProps);
 }
-HomeAutomation.exec = ()=> {
+
+HomeAutomation.query = (data, reply)=> {
+  let devices = data.devices.reduce((object, item) => {
+    object[item.id] = {
+      on : true
+    }
+    return object;
+  }, {});
+  let deviceProps = {
+    requestId: data.requestId,
+    payload: {
+      devices: devices
+    }
+  }
+  console.log("QUERY response: ", deviceProps);
+  return reply(deviceProps);
+}
+
+HomeAutomation.exec = (data, response)=> {
+}
+
+class HarmonyDevice {
+  constructor(label, schema, options){
+    this.label = label;
+    this.schema = schema; 
+    this.options = options;
+  }
+
+  get json() {
+    let device = HubState.deviceByName(this.label);
+    let id = device.id;
+    let name = device.label;
+    let baseData =  {
+      id : id,
+      type : this.schema,
+      name : {
+        name : name
+      },
+      willReportState: false
+    }
+    return Object.assign({}, baseData, this.options);
+  }
 }
 
 module.exports = HomeAutomation;
