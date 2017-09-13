@@ -1,0 +1,16 @@
+{
+  "id": "2423ab31-92b5-4982-afd9-4c2e3aa82c7b",
+  "name": "Temperature",
+  "isOverridable": true,
+  "entries": [
+    {
+      "value": "temperature",
+      "synonyms": [
+        "temperature",
+        "temp"
+      ]
+    }
+  ],
+  "isEnum": false,
+  "automatedExpansion": false
+}

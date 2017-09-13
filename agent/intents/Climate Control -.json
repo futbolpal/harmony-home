@@ -1,0 +1,85 @@
+{
+  "userSays": [
+    {
+      "id": "198f24f1-3764-4277-8f52-7b6eb8575c7e",
+      "data": [
+        {
+          "text": "i\u0027m feeling warm"
+        }
+      ],
+      "isTemplate": false,
+      "count": 0
+    },
+    {
+      "id": "e4b25df1-67f1-4b69-806c-d5c1d38e1800",
+      "data": [
+        {
+          "text": "i\u0027m warm"
+        }
+      ],
+      "isTemplate": false,
+      "count": 0
+    },
+    {
+      "id": "23e9d153-6d58-4fff-b78b-1e92bd209fd4",
+      "data": [
+        {
+          "text": "i\u0027m roasting"
+        }
+      ],
+      "isTemplate": false,
+      "count": 0
+    },
+    {
+      "id": "ac6db074-dc94-4a5f-8fd0-450d0d0603e7",
+      "data": [
+        {
+          "text": "it\u0027s hot in here"
+        }
+      ],
+      "isTemplate": false,
+      "count": 0
+    },
+    {
+      "id": "7bf6fe48-ad96-4cfa-9c89-4c735990b5f6",
+      "data": [
+        {
+          "text": "i\u0027m hot"
+        }
+      ],
+      "isTemplate": false,
+      "count": 0
+    }
+  ],
+  "id": "3f71c173-a336-4197-b942-c11ffb1f8b30",
+  "name": "Climate Control -",
+  "auto": true,
+  "contexts": [],
+  "responses": [
+    {
+      "resetContexts": false,
+      "affectedContexts": [
+        {
+          "name": "ClimateControl--followup",
+          "parameters": {},
+          "lifespan": 2
+        }
+      ],
+      "parameters": [],
+      "messages": [
+        {
+          "type": 0,
+          "speech": "Is that better?"
+        }
+      ],
+      "defaultResponsePlatforms": {
+        "google": false
+      }
+    }
+  ],
+  "priority": 500000,
+  "webhookUsed": true,
+  "webhookForSlotFilling": true,
+  "fallbackIntent": false,
+  "events": []
+}

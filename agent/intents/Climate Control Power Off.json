@@ -1,0 +1,59 @@
+{
+  "userSays": [
+    {
+      "id": "028747c6-9f76-4668-9ba1-0329cd54aade",
+      "data": [
+        {
+          "text": "Turn off the Air Conditioning"
+        }
+      ],
+      "isTemplate": false,
+      "count": 0
+    },
+    {
+      "id": "510d8401-62d3-4dfc-84e5-5a1380a6fe37",
+      "data": [
+        {
+          "text": "Turn off the Air Conditioner"
+        }
+      ],
+      "isTemplate": false,
+      "count": 0
+    },
+    {
+      "id": "147eb23a-a2b7-486d-bf56-fa496c1d329f",
+      "data": [
+        {
+          "text": "Turn off the AC"
+        }
+      ],
+      "isTemplate": false,
+      "count": 0
+    }
+  ],
+  "id": "348e8000-b6a2-48cd-9592-434524a3f9d2",
+  "name": "Climate Control Power Off",
+  "auto": true,
+  "contexts": [],
+  "responses": [
+    {
+      "resetContexts": false,
+      "affectedContexts": [],
+      "parameters": [],
+      "messages": [
+        {
+          "type": 0,
+          "speech": []
+        }
+      ],
+      "defaultResponsePlatforms": {
+        "google": true
+      }
+    }
+  ],
+  "priority": 500000,
+  "webhookUsed": true,
+  "webhookForSlotFilling": true,
+  "fallbackIntent": false,
+  "events": []
+}

@@ -1,0 +1,33 @@
+{
+  "userSays": [],
+  "id": "afc862b0-f7e1-4e51-b84e-b8c14c2441b7",
+  "name": "Default Welcome Intent",
+  "auto": true,
+  "contexts": [],
+  "responses": [
+    {
+      "resetContexts": false,
+      "action": "input.welcome",
+      "affectedContexts": [],
+      "parameters": [],
+      "messages": [
+        {
+          "type": 0,
+          "speech": "Great!  Are you comfortable?  Are you too hot, or too cold?"
+        }
+      ],
+      "defaultResponsePlatforms": {
+        "google": true
+      }
+    }
+  ],
+  "priority": 500000,
+  "webhookUsed": false,
+  "webhookForSlotFilling": false,
+  "fallbackIntent": false,
+  "events": [
+    {
+      "name": "WELCOME"
+    }
+  ]
+}

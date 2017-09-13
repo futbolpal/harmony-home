@@ -1,0 +1,97 @@
+{
+  "userSays": [
+    {
+      "id": "d173dad0-170e-40e4-b30d-835428df69db",
+      "data": [
+        {
+          "text": "it\u0027s still cold"
+        }
+      ],
+      "isTemplate": false,
+      "count": 0
+    },
+    {
+      "id": "f0144456-a0f9-4281-8c46-12a04225d62c",
+      "data": [
+        {
+          "text": "i\u0027m still cold"
+        }
+      ],
+      "isTemplate": false,
+      "count": 0
+    },
+    {
+      "id": "e99b654c-2bcb-4668-aef7-01872d6e4780",
+      "data": [
+        {
+          "text": "make it warmer"
+        }
+      ],
+      "isTemplate": false,
+      "count": 0
+    },
+    {
+      "id": "382995e8-84ab-444e-9aba-0bd291663fb4",
+      "data": [
+        {
+          "text": "i\u0027m freezing"
+        }
+      ],
+      "isTemplate": false,
+      "count": 0
+    },
+    {
+      "id": "c585c478-5522-4d3f-ab43-28a557dd51dd",
+      "data": [
+        {
+          "text": "it\u0027s cold in here"
+        }
+      ],
+      "isTemplate": false,
+      "count": 0
+    },
+    {
+      "id": "e729af01-cabe-456c-aef8-77757f7e9bc8",
+      "data": [
+        {
+          "text": "i\u0027m cold"
+        }
+      ],
+      "isTemplate": false,
+      "count": 0
+    }
+  ],
+  "id": "66e87d66-a114-4e97-b8a4-6d7fc62d4ce7",
+  "name": "Climate Control +",
+  "auto": true,
+  "contexts": [],
+  "responses": [
+    {
+      "resetContexts": false,
+      "action": "",
+      "affectedContexts": [
+        {
+          "name": "ClimateControl-followup",
+          "parameters": {},
+          "lifespan": 2
+        }
+      ],
+      "parameters": [],
+      "messages": [
+        {
+          "type": 0,
+          "speech": [
+            "Is that better?",
+            "Are you warmer now?"
+          ]
+        }
+      ],
+      "defaultResponsePlatforms": {}
+    }
+  ],
+  "priority": 500000,
+  "webhookUsed": true,
+  "webhookForSlotFilling": true,
+  "fallbackIntent": false,
+  "events": []
+}
