@@ -12,6 +12,9 @@
     "NEW_RELIC_LOG": {
       "required": true
     },
+    "GOOGLE_CLIENT_ID": {
+      "required": true
+    },
     "HEROKU_APP_NAME": {
       "required": true
     },

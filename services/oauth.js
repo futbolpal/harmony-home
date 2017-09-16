@@ -6,8 +6,7 @@ const util = require('util');
 
 const OAuth = {}
 
-OAuth.CLIENT_ID = '789146150131-llj81jac4mrkvn2nquv2j8ig42eigbmh';
-OAuth.REDIRECT_URI = '';
+OAuth.CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
 
 const generateIndex = () => {
   return Crypto.randomBytes(16).toString('base64');
