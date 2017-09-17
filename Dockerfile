@@ -7,6 +7,9 @@ RUN apt-get install -y nodejs
 RUN mkdir -p /app/user
 WORKDIR /app/user
 
+ADD https://dl.google.com/gactions/updates/bin/linux/amd64/gactions/gactions gactions
+RUN chmod +x gactions
+
 COPY package-lock.json .
 COPY package.json .
 RUN npm install

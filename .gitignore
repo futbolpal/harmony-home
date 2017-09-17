@@ -4,3 +4,6 @@
 newrelic_agent.log
 node_modules
 npm-debug.log
+creds.data
+action.json
+gactions
