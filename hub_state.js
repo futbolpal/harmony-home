@@ -45,7 +45,7 @@ hubState.refresh = () => {
 hubState.load = () => {
   if(RedisClient.connected){
     RedisClient.get("hubState", (error, reply) => {
-      hubState.state = JSON.parse(reply) || {};
+      hubState.state = Object.assign({}, hubState.state, JSON.parse(reply));
       console.log("Configuration Loaded");
     });
   } else {
