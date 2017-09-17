@@ -1,4 +1,12 @@
-{
+'use strict';
+
+if(!process.env.DEPLOY_DOMAIN){
+  console.log("Missing environment variable: DEPLOY_DOMAIN (https://myapp.com)");
+  process.exit(1);
+}
+
+const fs = require('fs');
+const actionPackage = {
   "actions": [
     {
       "name": "MAIN",
@@ -214,12 +222,20 @@
     "conversations": {
       "harmony-home": {
         "name": "harmony-home",
-        "url": "https://8fd9ab13.ngrok.io/gh"
+        "url": process.env.DEPLOY_DOMAIN + "/gh"
       },
       "automation" :
       {
         "name": "automation",
-        "url": "https://harmony-home-pr-4.herokuapp.com/ha"
+        "url": process.env.DEPLOY_DOMAIN + "/ha"
       }
     }
 }
+
+const content = JSON.stringify(actionPackage);
+fs.writeFile("action.json", content, 'utf8', function (err) {
+  if (err) {
+    return console.log(err);
+  }
+  console.log("action.json package generated");
+}); 
