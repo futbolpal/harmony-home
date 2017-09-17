@@ -1,30 +1,28 @@
-.PHONY: build clean run gactions-update
+.PHONY: build clean run gactions-update gactions-test
 
 default: help
 
-# retrieve the currently checked out git SHA
-GIT_SHA = $(shell git rev-parse HEAD)
+####################################################
+# Shared functions used by the targets that follow #
+####################################################
 
-# GIT_BRANCH is special cased because of the way Jenkins handles git
-# repositories. When Jenkins checks out a commit the branch is left in a
-# "detached head" state and thus it's not possible to determine the branch
-# name using the same method we use locally.
-ifndef GIT_BRANCH
-	GIT_BRANCH = $(shell git rev-parse --abbrev-ref HEAD)
-else
-	GIT_BRANCH = $(shell echo $$GIT_BRANCH | cut -d / -f 2)
-endif
+# Check that given variables are set and all have non-empty values,
+# die with an error otherwise.
+#
+# Params:
+#   1. Variable name(s) to test.
+#   2. (optional) Error message to print.
+check_defined = \
+	$(strip $(foreach 1,$1, \
+		$(call __check_defined,$1,$(strip $(value 2)))))
+__check_defined = \
+	$(if $(value $1),, \
+		$(error Undefined variable $1$(if $2, ($2))))
 
-# check if the git repository contains any untracked or changed files. If it
-# does then we set a "dirty tag" that will be appended to any container tags
-# or image names when built to indicate that the artifact was not built from
-# a pristine git checkout.
-IS_REPO_DIRTY = $(shell git diff --shortstat 2> /dev/null | tail -n1)
-ifeq ($(strip $(IS_REPO_DIRTY)),)
-	DIRTY_TAG =
-else
-	DIRTY_TAG= -dirty
-endif
+
+ensure-variables:
+	@:$(call check_defined, PROJECT_ID, Google actions project id)
+
 
 help: ## Show this help
 	@echo "Harmony Home"
@@ -41,13 +39,14 @@ clean: ## Remove build/test artifacts
 	@docker-compose rm --force redis
 
 build: clean ## Build the docker image
+	env > .env
 	@docker-compose build web
 
 run: clean build ## Invoke the function locally with an event piped to stdin
 	@docker-compose run --rm web
 
-gactions-update: clean build
+gactions-update: ensure-variables clean build
 	@docker-compose run --rm web ./scripts/gactions-update.sh
 
-gactions-test: clean build
+gactions-test: ensure-variables clean build
 	@docker-compose run --rm web ./scripts/gactions-test.sh
