@@ -15,16 +15,15 @@ HomeActions.register = (server) => {
     method: 'POST',
     path:'/gh',
     handler : (request, reply) => {
-      let intentName = request.payload.result.metadata.intentName;
-      console.log(intentName);
-      console.log(request.payload);
-      if(Intents.INTENT_GROUP_CLIMATE_CONTROL.includes(intentName)){
-        return ClimateControl(HubState, intentName, request, reply);
-      } else if(Intents.INTENT_GROUP_TV_CONTROL.includes(intentName)){
-        return TvControl(HubState, intentName, request, reply);
+      for(let i = 0; i < request.payload.inputs.length; i++){
+        let intent = request.payload.inputs[0];
+        if(Intents.INTENT_GROUP_CLIMATE_CONTROL.includes(intent.intent)){
+          return ClimateControl(HubState, intent, request, reply);
+        } else if(Intents.INTENT_GROUP_TV_CONTROL.includes(intent.intent)){
+          return TvControl(HubState, intent, request, reply);
+        }
       }
     }
   });
 }
-
 module.exports = HomeActions;

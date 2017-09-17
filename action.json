@@ -1,0 +1,150 @@
+{
+  "actions": [
+    {
+      "name": "MAIN",
+      "fulfillment": {
+        "conversationName": "harmony-home"
+      },
+      "intent": {
+        "name" : "actions.intent.MAIN"
+      }
+    },
+    {
+      "name": "com.harmony-home.climate-control.temperature.up",
+      "fulfillment": {
+        "conversationName": "harmony-home"
+      },
+      "intent": {
+        "name" : "com.harmony-home.intent.climate-control.temperature.up",
+        "trigger":{
+          "queryPatterns" : [
+            "i'm cold",
+            "it's freezing in here",
+            "raise the temperature",
+            "turn down the AC"
+          ]
+        }
+      }
+    },
+    {
+      "name": "com.harmony-home.climate-control.temperature.down",
+      "fulfillment": {
+        "conversationName": "harmony-home"
+      },
+      "intent": {
+        "name" : "com.harmony-home.intent.climate-control.temperature.down",
+        "trigger":{
+          "queryPatterns" : [
+            "i'm hot",
+            "it's boiling in here",
+            "lower the temperature",
+            "turn up the AC"
+          ]
+        }
+      }
+    },
+    {
+      "name": "com.harmony-home.climate-control.temperature.set",
+      "fulfillment": {
+        "conversationName": "harmony-home"
+      },
+      "intent": {
+        "name" : "com.harmony-home.intent.climate-control.temperature.set",
+        "parameters": [{
+          "name": "temperature",
+          "type": "SchemaOrg_Number"
+        }],
+        "trigger":{
+          "queryPatterns" : [
+            "set the AC to $SchemaOrg_Number:temperature degrees",
+            "set the temperature to $SchemaOrg_Number:temperature degrees"
+          ]
+        }
+      }
+    },
+    {
+      "name": "com.harmony-home.climate-control.temperature.reset",
+      "fulfillment": {
+        "conversationName": "harmony-home"
+      },
+      "intent": {
+        "name" : "com.harmony-home.intent.climate-control.temperature.reset",
+        "parameters": [{
+          "name": "temperature",
+          "type": "SchemaOrg_Number"
+        }],
+        "trigger":{
+          "queryPatterns" : [
+            "the AC is set to $SchemaOrg_Number:temperature degrees",
+            "the AC is currently set to $SchemaOrg_Number:temperature degrees",
+            "the temperature is set to $SchemaOrg_Number:temperature degrees",
+            "the temperature is currently set to $SchemaOrg_Number:temperature degrees"
+          ]
+        }
+      }
+    },
+    {
+      "name": "com.harmony-home.climate-control.temperature.status",
+      "fulfillment": {
+        "conversationName": "harmony-home"
+      },
+      "intent": {
+        "name" : "com.harmony-home.intent.climate-control.temperature.status",
+        "trigger":{
+          "queryPatterns" : [
+            "what is the AC currently set to",
+            "what is the current temperature"
+          ]
+        }
+      }
+    },
+    {
+      "name": "com.harmony-home.climate-control.on",
+      "fulfillment": {
+        "conversationName": "harmony-home"
+      },
+      "intent": {
+        "name" : "com.harmony-home.intent.climate-control.on",
+        "trigger":{
+          "queryPatterns" : [
+            "turn on the AC",
+            "turn on AC"
+          ]
+        }
+      }
+    },
+    {
+      "name": "com.harmony-home.climate-control.off",
+      "fulfillment": {
+        "conversationName": "harmony-home"
+      },
+      "intent": {
+        "name" : "com.harmony-home.intent.climate-control.off",
+        "trigger":{
+          "queryPatterns" : [
+            "turn off the AC",
+            "turn off AC"
+          ]
+        }
+      }
+    },
+    {
+      "name": "actions.devices",
+      "deviceControl": {
+      },
+      "fulfillment": {
+        "conversationName": "automation"
+      }
+    }],
+    "conversations": {
+      "harmony-home": {
+        "name": "harmony-home",
+        "url": "https://8fd9ab13.ngrok.io/gh"
+      },
+      "automation" :
+      {
+        "name": "automation",
+        "url": "https://harmony-home-pr-4.herokuapp.com/ha"
+      }
+    }
+}

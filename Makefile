@@ -1,4 +1,4 @@
-.PHONY: build clean run
+.PHONY: build clean run gactions-update
 
 default: help
 
@@ -41,7 +41,13 @@ clean: ## Remove build/test artifacts
 	@docker-compose rm --force redis
 
 build: clean ## Build the docker image
-	@docker-compose build service
+	@docker-compose build web
 
 run: clean build ## Invoke the function locally with an event piped to stdin
-	@docker-compose run --rm service 
+	@docker-compose run --rm web
+
+gactions-update: clean build
+	@docker-compose run --rm web ./scripts/gactions-update.sh
+
+gactions-test: clean build
+	@docker-compose run --rm web ./scripts/gactions-test.sh
