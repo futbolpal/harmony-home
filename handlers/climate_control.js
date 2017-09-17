@@ -23,7 +23,7 @@ Intents.INTENT_GROUP_CLIMATE_CONTROL = [
   Intents.INTENT_CLIMATE_CONTROL_POWER_ON     
 ];
 
-const handleClimateControl = (hubState, intent, request, reply) => {
+const handleClimateControl = (hubState, conversationToken, intent, request, reply) => {
   let device = hubState.deviceByName("Friedrich Climate Control");
   let intentName = intent.intent;
   

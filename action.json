@@ -129,6 +129,81 @@
       }
     },
     {
+      "name": "com.harmony-home.tv.on",
+      "fulfillment": {
+        "conversationName": "harmony-home"
+      },
+      "intent": {
+        "name" : "com.harmony-home.intent.tv.on",
+        "trigger":{
+          "queryPatterns" : [
+            "turn on the tv",
+            "turn on tv"
+          ]
+        }
+      }
+    },
+    {
+      "name": "com.harmony-home.tv.off",
+      "fulfillment": {
+        "conversationName": "harmony-home"
+      },
+      "intent": {
+        "name" : "com.harmony-home.intent.tv.off",
+        "trigger":{
+          "queryPatterns" : [
+            "turn off the tv",
+            "turn off tv"
+          ]
+        }
+      }
+    },
+    {
+      "name": "com.harmony-home.tv.mute",
+      "fulfillment": {
+        "conversationName": "harmony-home"
+      },
+      "intent": {
+        "name" : "com.harmony-home.intent.tv.mute",
+        "trigger":{
+          "queryPatterns" : [
+            "mute the tv",
+            "mute tv"
+          ]
+        }
+      }
+    },
+    {
+      "name": "com.harmony-home.tv.volume.up",
+      "fulfillment": {
+        "conversationName": "harmony-home"
+      },
+      "intent": {
+        "name" : "com.harmony-home.intent.tv.volume.up",
+        "trigger":{
+          "queryPatterns" : [
+            "turn the volume up on the tv",
+            "turn up the volume on the tv"
+          ]
+        }
+      }
+    },
+    {
+      "name": "com.harmony-home.tv.volume.down",
+      "fulfillment": {
+        "conversationName": "harmony-home"
+      },
+      "intent": {
+        "name" : "com.harmony-home.intent.tv.volume.down",
+        "trigger":{
+          "queryPatterns" : [
+            "turn the volume down on the tv",
+            "turn down the volume on the tv"
+          ]
+        }
+      }
+    },
+    {
       "name": "actions.devices",
       "deviceControl": {
       },
