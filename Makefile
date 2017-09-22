@@ -43,7 +43,7 @@ build: clean ## Build the docker image
 	@docker-compose build web
 
 run: clean build ## Invoke the function locally with an event piped to stdin
-	@docker-compose run --rm web
+	@docker-compose up web
 
 gactions-update: ensure-variables clean build
 	@docker-compose run --rm web ./scripts/gactions-update.sh
