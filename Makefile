@@ -38,8 +38,18 @@ gen-mocks: clean-mocks
 	export DEPLOY_DOMAIN=http://www.example.com; \
 	docker-compose run --rm mock ./scripts/gen-mocks.sh
 
-gactions-update:  clean build
-	@docker-compose run --rm web ./scripts/gactions-update.sh
+gactions-update: clean build
+	export PACKAGE_GENERATOR=action.js; \
+	docker-compose run --rm web ./scripts/gactions-update.sh
 
-gactions-test:  clean build
-	@docker-compose run --rm web ./scripts/gactions-test.sh
+gactions-test: clean build
+	export PACKAGE_GENERATOR=action.js; \
+	docker-compose run --rm web ./scripts/gactions-test.sh
+
+smarthome-update: clean build
+	export PACKAGE_GENERATOR=action_ha.js; \
+	docker-compose run --rm web ./scripts/gactions-update.sh
+
+smarthome-test: clean build
+	export PACKAGE_GENERATOR=action_ha.js; \
+	docker-compose run --rm web ./scripts/gactions-test.sh
