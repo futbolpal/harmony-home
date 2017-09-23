@@ -11,6 +11,7 @@ Intents.INTENT_CLIMATE_CONTROL_UP           = "com.harmony-home.intent.climate-c
 Intents.INTENT_CLIMATE_CONTROL_DOWN         = "com.harmony-home.intent.climate-control.temperature.down";
 Intents.INTENT_CLIMATE_CONTROL_RESET        = "com.harmony-home.intent.climate-control.temperature.reset";
 Intents.INTENT_CLIMATE_CONTROL_SET          = "com.harmony-home.intent.climate-control.temperature.set";
+Intents.INTENT_CLIMATE_CONTROL_ADJUST       = "com.harmony-home.intent.climate-control.temperature.adjust";
 Intents.INTENT_CLIMATE_CONTROL_POWER_OFF    = "com.harmony-home.intent.climate-control.on";
 Intents.INTENT_CLIMATE_CONTROL_POWER_ON     = "com.harmony-home.intent.climate-control.off";
 
@@ -20,6 +21,7 @@ Intents.INTENT_GROUP_CLIMATE_CONTROL = [
   Intents.INTENT_CLIMATE_CONTROL_DOWN         ,
   Intents.INTENT_CLIMATE_CONTROL_RESET        ,
   Intents.INTENT_CLIMATE_CONTROL_SET          ,
+  Intents.INTENT_CLIMATE_CONTROL_ADJUST       ,
   Intents.INTENT_CLIMATE_CONTROL_POWER_OFF    ,
   Intents.INTENT_CLIMATE_CONTROL_POWER_ON     
 ];
@@ -40,6 +42,7 @@ const handleClimateControl = (hubState, conversationToken, intent, request, repl
   intentMap[Intents.INTENT_CLIMATE_CONTROL_DOWN]        = { command : Commands.DOWN, response: "Ok" }
   intentMap[Intents.INTENT_CLIMATE_CONTROL_RESET]       = { command : null, response: handleSetStatus }
   intentMap[Intents.INTENT_CLIMATE_CONTROL_SET]         = { command : null, response: handleSetTemperature }
+  intentMap[Intents.INTENT_CLIMATE_CONTROL_ADJUST]      = { command : null, response: handleAdjustTemperature }
   intentMap[Intents.INTENT_CLIMATE_CONTROL_POWER_OFF]   = { command : Commands.POWER, response: handleTogglePower }
   intentMap[Intents.INTENT_CLIMATE_CONTROL_POWER_ON]    = { command : Commands.POWER, response: handleTogglePower }
 
@@ -69,6 +72,9 @@ const argsTemperature = (intent) => {
   return Number(intent.arguments.find((arg) => arg.name == 'temperature').raw_text);
 }
 
+const queryContains = (intent, needle) => {
+  return intent.raw_inputs.find((raw_input) => raw_input.query.includes(needle)) != undefined;
+}
 
 const adjustTemperature = (hubState, device, amount, delay = 750) => {
   let command = amount > 0 ? Commands.UP : Commands.DOWN;
@@ -87,6 +93,15 @@ const handleSetTemperature = (hubState, conversationToken, intent, request, repl
   let target_temp = argsTemperature(intent);
   let diff = hubState.state.climate_control.temp - target_temp;
   return adjustTemperature(hubState, device, diff);
+}
+
+const handleAdjustTemperature = (hubState, conversationToken, intent, request, reply, device) => {
+  reply(HomeActions.createSimpleReply(conversationToken, "Ok"));
+  let amount = argsTemperature(intent);
+  if(queryContains(intent, "down")){
+    amount *= -1;
+  }
+  return adjustTemperature(hubState, device, amount);
 }
 
 const handleTogglePower = (hubState, conversationToken, intent, request, reply, device) => {
