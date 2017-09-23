@@ -18,6 +18,39 @@ const actionPackage = {
       }
     },
     {
+      "name": "com.harmony-home.climate-control.temperature.adjust",
+      "fulfillment": {
+        "conversationName": "harmony-home"
+      },
+      "intent": {
+        "name" : "com.harmony-home.intent.climate-control.temperature.adjust",
+        "parameters": [{
+          "name": "temperature",
+          "type": "SchemaOrg_Number"
+        }],
+        "trigger":{
+          "queryPatterns" : [
+            "turn the temperature up by $SchemaOrg_Number:temperature degrees",
+            "turn up the temperature by $SchemaOrg_Number:temperature degrees",
+            "turn up the temp by $SchemaOrg_Number:temperature degrees",
+            "turn the temp up by $SchemaOrg_Number:temperature degrees",
+            "turn the temperature up $SchemaOrg_Number:temperature degrees",
+            "turn up the temperature $SchemaOrg_Number:temperature degrees",
+            "turn up the temp $SchemaOrg_Number:temperature degrees",
+            "turn the temp up $SchemaOrg_Number:temperature degrees",
+            "turn the temperature down by $SchemaOrg_Number:temperature degrees",
+            "turn down the temperature by $SchemaOrg_Number:temperature degrees",
+            "turn down the temp by $SchemaOrg_Number:temperature degrees",
+            "turn the temp down by $SchemaOrg_Number:temperature degrees",
+            "turn the temperature down $SchemaOrg_Number:temperature degrees",
+            "turn down the temperature $SchemaOrg_Number:temperature degrees",
+            "turn down the temp $SchemaOrg_Number:temperature degrees",
+            "turn the temp down $SchemaOrg_Number:temperature degrees"
+          ]
+        }
+      }
+    },
+    {
       "name": "com.harmony-home.climate-control.temperature.up",
       "fulfillment": {
         "conversationName": "harmony-home"
