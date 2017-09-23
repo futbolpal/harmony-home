@@ -30,22 +30,14 @@ const actionPackage = {
         }],
         "trigger":{
           "queryPatterns" : [
-            "turn the temperature up by $SchemaOrg_Number:temperature degrees",
-            "turn up the temperature by $SchemaOrg_Number:temperature degrees",
-            "turn up the temp by $SchemaOrg_Number:temperature degrees",
-            "turn the temp up by $SchemaOrg_Number:temperature degrees",
-            "turn the temperature up $SchemaOrg_Number:temperature degrees",
-            "turn up the temperature $SchemaOrg_Number:temperature degrees",
-            "turn up the temp $SchemaOrg_Number:temperature degrees",
-            "turn the temp up $SchemaOrg_Number:temperature degrees",
-            "turn the temperature down by $SchemaOrg_Number:temperature degrees",
-            "turn down the temperature by $SchemaOrg_Number:temperature degrees",
-            "turn down the temp by $SchemaOrg_Number:temperature degrees",
-            "turn the temp down by $SchemaOrg_Number:temperature degrees",
-            "turn the temperature down $SchemaOrg_Number:temperature degrees",
-            "turn down the temperature $SchemaOrg_Number:temperature degrees",
-            "turn down the temp $SchemaOrg_Number:temperature degrees",
-            "turn the temp down $SchemaOrg_Number:temperature degrees"
+            "turn (the)? temperature up (by)? $SchemaOrg_Number:temperature (degrees)?",
+            "turn (the)? temp up (by)? $SchemaOrg_Number:temperature (degrees)?",
+            "turn up (the)? temperature (by)? $SchemaOrg_Number:temperature (degrees)?",
+            "turn up (the)? temp (by)? $SchemaOrg_Number:temperature (degrees)?",
+            "turn (the)? temperature down (by)? $SchemaOrg_Number:temperature (degrees)?",
+            "turn (the)? temp down (by)? $SchemaOrg_Number:temperature (degrees)?",
+            "turn down (the)? temperature (by)? $SchemaOrg_Number:temperature (degrees)?",
+            "turn down (the)? temp (by)? $SchemaOrg_Number:temperature (degrees)?"
           ]
         }
       }
@@ -60,9 +52,10 @@ const actionPackage = {
         "trigger":{
           "queryPatterns" : [
             "i'm cold",
-            "it's freezing in here",
-            "raise the temperature",
-            "turn down the AC"
+            "it's freezing (in here)?",
+            "raise (the)? temperature",
+            "raise (the)? temp",
+            "turn down (the)? AC"
           ]
         }
       }
@@ -77,8 +70,9 @@ const actionPackage = {
         "trigger":{
           "queryPatterns" : [
             "i'm hot",
-            "it's boiling in here",
-            "lower the temperature",
+            "it's boiling (in here)?",
+            "lower (the)? temperature",
+            "lower (the)? temp",
             "turn up the AC"
           ]
         }
@@ -97,8 +91,8 @@ const actionPackage = {
         }],
         "trigger":{
           "queryPatterns" : [
-            "set the AC to $SchemaOrg_Number:temperature degrees",
-            "set the temperature to $SchemaOrg_Number:temperature degrees"
+            "set (the)? AC to $SchemaOrg_Number:temperature degrees",
+            "set (the)? temperature to $SchemaOrg_Number:temperature degrees"
           ]
         }
       }
@@ -116,10 +110,10 @@ const actionPackage = {
         }],
         "trigger":{
           "queryPatterns" : [
-            "the AC is set to $SchemaOrg_Number:temperature degrees",
-            "the AC is currently set to $SchemaOrg_Number:temperature degrees",
-            "the temperature is set to $SchemaOrg_Number:temperature degrees",
-            "the temperature is currently set to $SchemaOrg_Number:temperature degrees"
+            "(the)? AC is set to $SchemaOrg_Number:temperature degrees",
+            "(the)? AC is currently set to $SchemaOrg_Number:temperature degrees",
+            "(the)? temperature is set to $SchemaOrg_Number:temperature degrees",
+            "(the)? temperature is currently set to $SchemaOrg_Number:temperature degrees"
           ]
         }
       }
@@ -133,8 +127,8 @@ const actionPackage = {
         "name" : "com.harmony-home.intent.climate-control.temperature.status",
         "trigger":{
           "queryPatterns" : [
-            "what is the AC currently set to",
-            "what is the current temperature"
+            "what is (the)? AC currently set to",
+            "what is (the)? current temperature"
           ]
         }
       }
@@ -148,8 +142,7 @@ const actionPackage = {
         "name" : "com.harmony-home.intent.climate-control.on",
         "trigger":{
           "queryPatterns" : [
-            "turn on the AC",
-            "turn on AC"
+            "turn on (the)? AC"
           ]
         }
       }
@@ -163,8 +156,7 @@ const actionPackage = {
         "name" : "com.harmony-home.intent.climate-control.off",
         "trigger":{
           "queryPatterns" : [
-            "turn off the AC",
-            "turn off AC"
+            "turn off (the)? AC"
           ]
         }
       }
@@ -178,8 +170,7 @@ const actionPackage = {
         "name" : "com.harmony-home.intent.tv.on",
         "trigger":{
           "queryPatterns" : [
-            "turn on the tv",
-            "turn on tv"
+            "turn on (the)? tv"
           ]
         }
       }
@@ -193,8 +184,7 @@ const actionPackage = {
         "name" : "com.harmony-home.intent.tv.off",
         "trigger":{
           "queryPatterns" : [
-            "turn off the tv",
-            "turn off tv"
+            "turn off (the)? tv"
           ]
         }
       }
@@ -208,8 +198,7 @@ const actionPackage = {
         "name" : "com.harmony-home.intent.tv.mute",
         "trigger":{
           "queryPatterns" : [
-            "mute the tv",
-            "mute tv"
+            "mute (the)? tv"
           ]
         }
       }
@@ -223,8 +212,8 @@ const actionPackage = {
         "name" : "com.harmony-home.intent.tv.volume.up",
         "trigger":{
           "queryPatterns" : [
-            "turn the volume up on the tv",
-            "turn up the volume on the tv"
+            "turn (the)? volume up on (the)? tv",
+            "turn up (the)? volume on (the)? tv"
           ]
         }
       }
@@ -238,8 +227,8 @@ const actionPackage = {
         "name" : "com.harmony-home.intent.tv.volume.down",
         "trigger":{
           "queryPatterns" : [
-            "turn the volume down on the tv",
-            "turn down the volume on the tv"
+            "turn (the)? volume down on (the)? tv",
+            "turn down (the)? volume on (the)? tv"
           ]
         }
       }
