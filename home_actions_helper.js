@@ -1,5 +1,7 @@
 'use strict';
 
+const Q = require('q');
+
 const HomeActionsHelper = {};
 
 HomeActionsHelper.createSimpleReply = (conversationToken, text) => {
@@ -14,4 +16,10 @@ HomeActionsHelper.createSimpleReply = (conversationToken, text) => {
   };
 }
 
+HomeActionsHelper.repeatCommands = (times, delay, commandFn) => {
+  let commands = new Array(times).fill(() => { 
+    return Q.delay(delay).then(commandFn);
+  });
+  return commands.reduce(Q.when, Q([]));
+}
 module.exports = HomeActionsHelper;
