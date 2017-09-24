@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jasmine"
   },
   "author": "",
   "license": "ISC",
@@ -24,6 +24,7 @@
     "underscore.string": "^3.3.4"
   },
   "devDependencies": {
+    "jasmine": "2.8.0",
     "md5": "2.2.1",
     "request-promise-native": "1.0.5",
     "sha1": "1.1.1",
