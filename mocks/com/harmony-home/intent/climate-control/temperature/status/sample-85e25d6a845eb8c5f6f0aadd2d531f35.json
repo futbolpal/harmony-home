@@ -1,0 +1,40 @@
+{
+  "user": {
+    "user_id": "AA9douZPaYbKS6OVl-T-NBl6xZua",
+    "permissions": [],
+    "locale": "en-US"
+  },
+  "conversation": {
+    "conversation_id": "1506223197333",
+    "type": 1
+  },
+  "inputs": [
+    {
+      "intent": "assistant.intent.action.MAIN",
+      "raw_inputs": [
+        {
+          "input_type": 2,
+          "query": "tell harmony home staging what is the AC currently set to",
+          "annotation_sets": []
+        }
+      ],
+      "arguments": [
+        {
+          "name": "trigger_query",
+          "raw_text": "what is the AC currently set to",
+          "text_value": "what is the AC currently set to"
+        }
+      ]
+    }
+  ],
+  "surface": {
+    "capabilities": [
+      {
+        "name": "actions.capability.AUDIO_OUTPUT"
+      }
+    ]
+  },
+  "device": {},
+  "is_in_sandbox": true,
+  "available_surfaces": []
+}

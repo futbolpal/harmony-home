@@ -1,0 +1,45 @@
+{
+  "user": {
+    "user_id": "AA9douZPaYbKS6OVl-T-NBl6xZua",
+    "permissions": [],
+    "locale": "en-US"
+  },
+  "conversation": {
+    "conversation_id": "1506223196625",
+    "type": 1
+  },
+  "inputs": [
+    {
+      "intent": "com.harmony-home.intent.climate-control.temperature.adjust",
+      "raw_inputs": [
+        {
+          "input_type": 2,
+          "query": "tell harmony home staging turn the temperature down 77 degrees",
+          "annotation_sets": []
+        }
+      ],
+      "arguments": [
+        {
+          "name": "temperature",
+          "raw_text": "77",
+          "text_value": "77"
+        },
+        {
+          "name": "trigger_query",
+          "raw_text": "turn the temperature down 77 degrees",
+          "text_value": "turn the temperature down 77 degrees"
+        }
+      ]
+    }
+  ],
+  "surface": {
+    "capabilities": [
+      {
+        "name": "actions.capability.AUDIO_OUTPUT"
+      }
+    ]
+  },
+  "device": {},
+  "is_in_sandbox": true,
+  "available_surfaces": []
+}

@@ -1,0 +1,40 @@
+{
+  "user": {
+    "user_id": "AA9douZPaYbKS6OVl-T-NBl6xZua",
+    "permissions": [],
+    "locale": "en-US"
+  },
+  "conversation": {
+    "conversation_id": "1506223197779",
+    "type": 1
+  },
+  "inputs": [
+    {
+      "intent": "com.harmony-home.intent.tv.volume.down",
+      "raw_inputs": [
+        {
+          "input_type": 2,
+          "query": "tell harmony home staging turn the volume down on tv",
+          "annotation_sets": []
+        }
+      ],
+      "arguments": [
+        {
+          "name": "trigger_query",
+          "raw_text": "turn the volume down on tv",
+          "text_value": "turn the volume down on tv"
+        }
+      ]
+    }
+  ],
+  "surface": {
+    "capabilities": [
+      {
+        "name": "actions.capability.AUDIO_OUTPUT"
+      }
+    ]
+  },
+  "device": {},
+  "is_in_sandbox": true,
+  "available_surfaces": []
+}

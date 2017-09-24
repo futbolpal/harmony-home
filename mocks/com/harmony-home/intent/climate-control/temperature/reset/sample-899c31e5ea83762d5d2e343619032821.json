@@ -1,0 +1,45 @@
+{
+  "user": {
+    "user_id": "AA9douZPaYbKS6OVl-T-NBl6xZua",
+    "permissions": [],
+    "locale": "en-US"
+  },
+  "conversation": {
+    "conversation_id": "1506223197312",
+    "type": 1
+  },
+  "inputs": [
+    {
+      "intent": "com.harmony-home.intent.climate-control.temperature.reset",
+      "raw_inputs": [
+        {
+          "input_type": 2,
+          "query": "tell harmony home staging the temperature is set to 27 degrees",
+          "annotation_sets": []
+        }
+      ],
+      "arguments": [
+        {
+          "name": "temperature",
+          "raw_text": "27",
+          "text_value": "27"
+        },
+        {
+          "name": "trigger_query",
+          "raw_text": "the temperature is set to 27 degrees",
+          "text_value": "the temperature is set to 27 degrees"
+        }
+      ]
+    }
+  ],
+  "surface": {
+    "capabilities": [
+      {
+        "name": "actions.capability.AUDIO_OUTPUT"
+      }
+    ]
+  },
+  "device": {},
+  "is_in_sandbox": true,
+  "available_surfaces": []
+}
