@@ -7,6 +7,18 @@ var request = require("request-promise-native");
 var shelljs = require("shelljs");
 var actionPackage = require("../action.js");
 
+const INVOCATION = "tell harmony home ci"
+
+if(!process.env.GOOGLE_SAPISID){
+  console.log("Missing environment variable: GOOGLE_SAPISID");
+  process.exit(1);
+}
+
+if(!process.env.GOOGLE_APISID){
+  console.log("Missing environment variable: GOOGLE_APISID");
+  process.exit(1);
+}
+
 if(!process.env.GOOGLE_SID){
   console.log("Missing environment variable: GOOGLE_SID");
   process.exit(1);
@@ -28,7 +40,7 @@ if(!process.env.GOOGLE_APIKEY){
 }
 
 const agentInvocation = (query) => {
-  return "tell harmony home staging " + query;
+  return INVOCATION + " " + query;
 }
 
 const replaceVariables = (pattern, parameters) => {
@@ -69,35 +81,30 @@ const generateQueries = (pattern) => {
 
 const execRequest = (query) => {
   let url = "https://assistant.clients6.google.com/v1/assistant:converse";
-  let key = process.env.GOOGLE_APIKEY;
   let origin = "https://console.actions.google.com"
-  let sapisid = "-ztVwdqd0PYZ2flX/ApjqZZk8u-cNkN3QP"
-  let apisid = "fE_IC0yavGw7Pu6p/Awvn_yjR5SztY2ehs"
+
+  let key = process.env.GOOGLE_APIKEY;
+  let sapisid = process.env.GOOGLE_SAPISID; 
+  let apisid = process.env.GOOGLE_APISID;
+
+  let sid = process.env.GOOGLE_SID;
+  let hsid = process.env.GOOGLE_HSID;
+  let ssid = process.env.GOOGLE_SSID;
+ 
   let timestamp = Math.floor(Date.now() / 1000);
   let hash = sha1(timestamp + " " + sapisid + " " + origin);
   let headers = {
     "authorization" : `SAPISIDHASH ${timestamp}_${hash}`,
-    "cookie" : `SID=${process.env.GOOGLE_SID}; \
-                HSID=${process.env.GOOGLE_HSID}; \
-                SSID=${process.env.GOOGLE_SSID}; \
+    "cookie" : `SID=${sid}; \
+                HSID=${hsid}; \
+                SSID=${ssid}; \
                 APISID=${apisid}; \
                 SAPISID=${sapisid};`,
-    "x-origin" : "https://console.actions.google.com",
+    "x-origin" : origin,
   }
   let body = {
-    "conversationToken" : "Test",
-    "debugLevel": 2,
     "inputType": "KEYBOARD",
     "locale": "en-US",
-    "mockLocation": {
-      "city": "Mountain View",
-      "coordinates": {
-        "latitude": 37.421980615353675,
-        "longitude": -122.08419799804688
-      },
-      "formattedAddress": "Googleplex, Mountain View, CA 94043, United States",
-      "zipCode": "94043"
-    },
     "query": agentInvocation(query),
     "surface": "GOOGLE_HOME"
   }
