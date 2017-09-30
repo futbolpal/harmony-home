@@ -13,11 +13,12 @@ services:
       - "6379"
   mock-web:
     <<: *web
+    env_file: .env.ci
     volumes: 
       - ./mocks:/usr/mocks
   mock: 
     build: .
-    env_file: .env
+    env_file: .env.ci
     depends_on:
       - "mock-web"
     volumes: 
