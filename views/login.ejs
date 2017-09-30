@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+    <title>Smart Home Provider</title>
+    <meta name="description" content="Smart Home virtual devices">
+    <meta name="google-signin-client_id" content="<%= client_id %>.apps.googleusercontent.com">
+
+    <link rel="icon" href="frontend/images/favicon.ico">
+      
+    <script src="https://apis.google.com/js/platform.js?onload=renderButton" async defer></script>
+    <script>
+    function onSuccess(user) {
+      var id_token = user.getAuthResponse().id_token
+      document.getElementById('idtoken').value = id_token;
+      document.getElementById('login-post').submit(); 
+    }
+    function onFailure(error) {
+      console.log(error);
+    }
+
+    function renderButton() {
+      console.log('here');
+      gapi.signin2.render('g-signin2', {
+        'scope': 'profile email',
+        'width': 240,
+        'height': 50,
+        'longtitle': true,
+        'theme': 'dark',
+        'onsuccess': onSuccess,
+        'onfailure': onFailure
+      });
+    }
+    </script>
+</head>
+<body>
+  <div id="g-signin2"></div>
+  <form id="login-post" action="/login" method="post">
+      <input type="hidden" name="idtoken" id="idtoken">
+      <input type="hidden" name="client_id" value="<%= client_id%>">
+      <input type="hidden" name="redirect_uri" value="<%= redirect_uri%>">
+      <input type="hidden" name="state" value="<%= state%>">
+  </form>
+</body>
+</html>
