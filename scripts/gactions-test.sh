@@ -1,4 +1,3 @@
 #!/bin/sh
 set -xe 
-
-node action.js && ./gactions test --action_package action.json --project $PROJECT_ID 
+node $PACKAGE_GENERATOR && ./gactions test --action_package action.json --project $PROJECT_ID 

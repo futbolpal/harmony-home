@@ -3,6 +3,8 @@ services:
   web: &web
     build: .
     env_file: .env
+    environment:
+      - PACKAGE_GENERATOR
     depends_on:
       - "redis"
     ports:
