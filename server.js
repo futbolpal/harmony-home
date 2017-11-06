@@ -1,6 +1,6 @@
 'use strict';
 
-
+const NewRelic = require('newrelic');
 const _ = require('underscore');
 const s = require("underscore.string");
 const Hapi = require('hapi');
