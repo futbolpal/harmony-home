@@ -60,7 +60,7 @@ const handleClimateControl = (hubState, conversationToken, intent, request, repl
     if(typeof(intentResponse) === 'function'){
       return intentResponse(hubState, conversationToken, intent, request, reply, device);
     } else {
-      return reply(HomeActions.createSimpleReply(conversationToken, intentResponse));
+      return reply.json(HomeActions.createSimpleReply(conversationToken, intentResponse));
     }
   });
 };
@@ -89,14 +89,14 @@ const adjustTemperature = (hubState, device, amount, delay = 750) => {
 // Handler Methods
 //
 const handleSetTemperature = (hubState, conversationToken, intent, request, reply, device) => {
-  reply(HomeActions.createSimpleReply(conversationToken, "Ok"));
+  reply.json(HomeActions.createSimpleReply(conversationToken, "Ok"));
   let target_temp = argsTemperature(intent);
   let diff = hubState.state.climate_control.temp - target_temp;
   return adjustTemperature(hubState, device, diff);
 }
 
 const handleAdjustTemperature = (hubState, conversationToken, intent, request, reply, device) => {
-  reply(HomeActions.createSimpleReply(conversationToken, "Ok"));
+  reply.json(HomeActions.createSimpleReply(conversationToken, "Ok"));
   let amount = argsTemperature(intent);
   if(queryContains(intent, "down")){
     amount *= -1;
@@ -106,19 +106,19 @@ const handleAdjustTemperature = (hubState, conversationToken, intent, request, r
 
 const handleTogglePower = (hubState, conversationToken, intent, request, reply, device) => {
   hubState.state.climate_control.online = !hubState.state.climate_control.online;
-  return reply(HomeActions.createSimpleReply(conversationToken, "Ok"));
+  return reply.json(HomeActions.createSimpleReply(conversationToken, "Ok"));
 }
 
 const handleSetStatus = (hubState, conversationToken, intent, request, reply, device) => {
   let current_temp = argsTemperature(intent);
   let status = "The current temperature is " + current_temp + " degrees";
   hubState.state.climate_control.temp = current_temp;
-  return reply(HomeActions.createSimpleReply(conversationToken, status));
+  return reply.json(HomeActions.createSimpleReply(conversationToken, status));
 }
 
 const handleReadStatus = (hubState, conversationToken, intent, request, reply, device) => {
   let status = "The current temperature is " + hubState.state.climate_control.temp + " degrees";
-  return reply(HomeActions.createSimpleReply(conversationToken, status));
+  return reply.json(HomeActions.createSimpleReply(conversationToken, status));
 }
 
 module.exports = handleClimateControl;
