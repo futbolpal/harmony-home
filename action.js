@@ -15,7 +15,8 @@ const actionPackage = {
       },
       "intent": {
         "name" : "actions.intent.MAIN"
-      }
+      },
+		  "signInRequired": true	
     },
     {
       "name": "com.harmony-home.climate-control.temperature.adjust",
@@ -240,18 +241,30 @@ const actionPackage = {
       "fulfillment": {
         "conversationName": "automation"
       }
-    }],
-    "conversations": {
-      "harmony-home": {
-        "name": "harmony-home",
-        "url": process.env.DEPLOY_DOMAIN + "/gh"
-      },
-      "automation" :
-      {
-        "name": "automation",
-        "url": process.env.DEPLOY_DOMAIN + "/ha"
-      }
     }
+	],
+	"conversations": {
+		"harmony-home": {
+			"name": "harmony-home",
+			"url": process.env.DEPLOY_DOMAIN + "/gh",
+			"fulfillmentApiVersion": 2
+		},
+		"automation" :
+		{
+			"name": "automation",
+			"url": process.env.DEPLOY_DOMAIN + "/ha"
+		}
+	},
+	"accountLinking" : {
+		"clientId": process.env.GOOGLE_CLIENT_ID,
+		"clientSecret": process.env.GOOGLE_CLIENT_SECRET,
+		"grantType": "AUTH_CODE",
+		"authenticationUrl": process.env.DEPLOY_DOMAIN + "/auth",
+		"accessTokenUrl": process.env.DEPLOY_DOMAIN + "/token",
+		"scopes": ["profile","email"],
+		"scopeExplanationUrl": "",
+		"assertionTypes": ["ID_TOKEN"]
+	}
 }
 
 if (require.main === module) {
