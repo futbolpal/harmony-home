@@ -1,4 +1,3 @@
-
 'use strict';
 
 const util = require('util');
@@ -40,12 +39,25 @@ const userDb = {
   }
 }
 
-User.findBy = (id) => {
+User.find = (id) => {
+  if(!userDb[id]) { return null }
   let user = Object.assign({}, userDb[id]);
+  user.id = id;
   user.deviceByHandler = (handler) => {
     return user.devices.find((d) => { return d.handler == handler });
+  }
+  user.setDevices = (devices) => {
+    userDb[user.id].devices = devices;
   }
   return user; 
 }
 
+User.find_or_create = (id) => {
+  if(userDb[id]) { return User.find(id) }
+  userDb[id] = {
+    hubState: {},
+    devices: []
+  }
+  return User.find(id); 
+}
 module.exports = User;

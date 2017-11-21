@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+    <title>Harmony Home Configuration</title>
+    <meta name="description" content="Harmony Home Configurations">
+</head>
+<body>
+  <form id="configuration-post" action="/configuration" method="post">
+    <input type="hidden" name="user_id" value="<%= user_id %>" />
+    <textarea name="devices" style="width:100%"><%= devices %></textarea>
+    <input type="submit" />
+  </form>
+</body>
+</html>

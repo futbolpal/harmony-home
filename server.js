@@ -4,6 +4,7 @@ const NewRelic = require('newrelic');
 const _ = require('underscore');
 const s = require("underscore.string");
 const Express = require('express');
+const BodyParser = require('body-parser')
 
 const Health = require('./health');
 const HubState = require('./hub_state');
@@ -11,7 +12,7 @@ const HomeAutomation = require('./home_automation');
 const HomeActions = require('./home_actions');
 const RedisClient = require('./redis_client');
 const OAuth = require('./services/oauth');
-const BodyParser = require('body-parser')
+const Configuration = require('./services/configuration');
 
 const server = Express();
 server.set('view engine', 'ejs');
@@ -26,6 +27,7 @@ Health.register(server);
 HomeAutomation.register(server);
 HomeActions.register(server);
 OAuth.register(server);
+Configuration.register(server);
 
 // Start the server
 server.listen(server.get('port'));
