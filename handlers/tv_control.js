@@ -5,7 +5,6 @@ const Q = require('q');
 const Intents     = require('../intents');
 const HubState    = require('../hub_state');
 const HomeActions = require('../home_actions_helper');
-const Users       = require('../models/user');
 
 const HandlerName = 'tv_control';
 
@@ -24,10 +23,9 @@ Intents.INTENT_GROUP_TV_CONTROL = [
 ];
 
 const handleTvControl = (hubState, context, request, reply) => {
-  let {intent, userId, conversationToken} = context;
+  let {intent, user, conversationToken} = context;
   let intentName = intent.intent;
 
-  let user = Users.findBy(userId);
   let deviceConfiguration = user.deviceByHandler(HandlerName);
   let device = hubState.deviceByName(deviceConfiguration.name);
   let commands = deviceConfiguration.commands;

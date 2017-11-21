@@ -29,10 +29,9 @@ Intents.INTENT_GROUP_CLIMATE_CONTROL = [
 ];
 
 const handleClimateControl = (hubState, context, request, reply) => {
-  let {intent, userId, conversationToken} = context;
+  let {intent, user, conversationToken} = context;
   let intentName = intent.intent;
 
-  let user = Users.findBy(userId);
   let deviceConfiguration = user.deviceByHandler(HandlerName);
   let device = hubState.deviceByName(deviceConfiguration.name);
   let commands = deviceConfiguration.commands;
