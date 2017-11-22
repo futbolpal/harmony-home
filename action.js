@@ -16,7 +16,7 @@ const actionPackage = {
       "intent": {
         "name" : "actions.intent.MAIN"
       },
-		  "signInRequired": true	
+      "signInRequired": true
     },
     {
       "name": "com.harmony-home.climate-control.temperature.adjust",
@@ -41,7 +41,8 @@ const actionPackage = {
             "turn down (the)? temp (by)? $SchemaOrg_Number:temperature (degrees)?"
           ]
         }
-      }
+      },
+      "signInRequired": true
     },
     {
       "name": "com.harmony-home.climate-control.temperature.up",
@@ -59,7 +60,8 @@ const actionPackage = {
             "turn down (the)? AC"
           ]
         }
-      }
+      },
+      "signInRequired": true
     },
     {
       "name": "com.harmony-home.climate-control.temperature.down",
@@ -77,7 +79,8 @@ const actionPackage = {
             "turn up the AC"
           ]
         }
-      }
+      },
+      "signInRequired": true
     },
     {
       "name": "com.harmony-home.climate-control.temperature.set",
@@ -96,7 +99,8 @@ const actionPackage = {
             "set (the)? temperature to $SchemaOrg_Number:temperature degrees"
           ]
         }
-      }
+      },
+      "signInRequired": true
     },
     {
       "name": "com.harmony-home.climate-control.temperature.reset",
@@ -117,7 +121,8 @@ const actionPackage = {
             "(the)? temperature is currently set to $SchemaOrg_Number:temperature degrees"
           ]
         }
-      }
+      },
+      "signInRequired": true
     },
     {
       "name": "com.harmony-home.climate-control.temperature.status",
@@ -132,7 +137,8 @@ const actionPackage = {
             "what is (the)? current temperature"
           ]
         }
-      }
+      },
+      "signInRequired": true
     },
     {
       "name": "com.harmony-home.climate-control.on",
@@ -146,7 +152,8 @@ const actionPackage = {
             "turn on (the)? AC"
           ]
         }
-      }
+      },
+      "signInRequired": true
     },
     {
       "name": "com.harmony-home.climate-control.off",
@@ -160,7 +167,8 @@ const actionPackage = {
             "turn off (the)? AC"
           ]
         }
-      }
+      },
+      "signInRequired": true
     },
     {
       "name": "com.harmony-home.tv.on",
@@ -174,7 +182,8 @@ const actionPackage = {
             "turn on (the)? tv"
           ]
         }
-      }
+      },
+      "signInRequired": true	
     },
     {
       "name": "com.harmony-home.tv.off",
@@ -188,7 +197,8 @@ const actionPackage = {
             "turn off (the)? tv"
           ]
         }
-      }
+      },
+      "signInRequired": true
     },
     {
       "name": "com.harmony-home.tv.mute",
@@ -202,7 +212,8 @@ const actionPackage = {
             "mute (the)? tv"
           ]
         }
-      }
+      },
+      "signInRequired": true
     },
     {
       "name": "com.harmony-home.tv.volume.up",
@@ -217,7 +228,8 @@ const actionPackage = {
             "turn up (the)? volume on (the)? tv"
           ]
         }
-      }
+      },
+      "signInRequired": true
     },
     {
       "name": "com.harmony-home.tv.volume.down",
@@ -232,7 +244,8 @@ const actionPackage = {
             "turn down (the)? volume on (the)? tv"
           ]
         }
-      }
+      },
+      "signInRequired": true
     },
     {
       "name": "actions.devices",
@@ -240,7 +253,8 @@ const actionPackage = {
       },
       "fulfillment": {
         "conversationName": "automation"
-      }
+      },
+      "signInRequired": true
     }
 	],
 	"conversations": {

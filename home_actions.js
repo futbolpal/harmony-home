@@ -9,6 +9,8 @@ const Intents = require('./intents');
 const ClimateControl = require('./handlers/climate_control');
 const TvControl = require('./handlers/tv_control');
 const User       = require('./models/user');
+const OAuth       = require('./services/oauth');
+
 
 const HomeActions = {}
 
@@ -32,7 +34,7 @@ const requireConfiguration = (request, response) => {
       app.getUser().access_token
       );
   console.log('redirect', redirect_uri);
-  app.ask(app.buildRichResponse()
+  return app.ask(app.buildRichResponse()
       // Create a basic card and add it to the rich response
       .addSimpleResponse('Please configure your Harmony Home')
       .addBasicCard(app.buildBasicCard('You\'ll need to provide some ' + 
@@ -66,9 +68,25 @@ const processGh = (request, reply) => {
       return TvControl(HubState, context, request, reply);
     }
   }
+  return reply.json(HomeActionsHelper.createSimpleReply(conversationToken, 'OK'));
+}
+
+const handleGh = (request, reply) => {
+  console.log('POST /gh');
+  const withUser = (tokenData) => {
+    let user = User.find(tokenData.uid);
+    if(!user) { return requireConfiguration(request, reply); }
+    return processGh(request, reply, user);
+  }
+  const withoutUser = () => {
+    const app = new ActionsSdkApp({request: request, response: reply});
+    return app.askForSignIn();
+  }
+  let accessToken = request.body.user.accessToken;
+  OAuth.retrieveAuth(accessToken).then(withUser, withoutUser);
 };
 
 HomeActions.register = (server) => {
-  server.post('/gh', processGh);
+  server.post('/gh', handleGh);
 };
 module.exports = HomeActions;
