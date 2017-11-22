@@ -9,17 +9,18 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "actions-on-google": "1.6.0",
+    "dotenv": "4.0.0",
     "ejs": "2.5.7",
+    "express": "4.16.2",
     "google-auth-library": "0.11.0",
     "google-id-token-verifier": "0.2.3",
-    "hapi": "^16.5.2",
     "harmonyHubCLI": "^1.1.0",
     "harmonyhubjs-client": "^1.1.10",
     "newrelic": "^2.1.0",
     "q": "^1.5.0",
     "redis": "^2.8.0",
     "underscore": "^1.8.3",
-    "underscore.string": "^3.3.4",
-    "vision": "4.1.1"
+    "underscore.string": "^3.3.4"
   }
 }

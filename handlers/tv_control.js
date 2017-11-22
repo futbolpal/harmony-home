@@ -33,7 +33,7 @@ const handleTvControl = (hubState, conversationToken, intent, request, reply) =>
   let command = intentMap[intentName].command;
   let intentResponse = intentMap[intentName].response;
   return hubState.executeCommand(true, device.label, command).then((response) => {
-    return reply(HomeActions.createSimpleReply(conversationToken, intentResponse));
+    return reply.json(HomeActions.createSimpleReply(conversationToken, intentResponse));
   });
 };
 
