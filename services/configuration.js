@@ -18,8 +18,9 @@ Configuration.register = (server) => {
     const withUser = (tokenData) => {
       let user = User.find_or_create(tokenData.uid);
       return reply.render('configuration', {
-        devices: JSON.stringify(user.devices)
         accessToken: accessToken,
+        devices: JSON.stringify(user.devices),
+        hubState: JSON.stringify(user.hubState)
       });
     }
     const withoutUser = () => { askForSignIn(request, reply); }
@@ -32,9 +33,11 @@ Configuration.register = (server) => {
     const withUser = (tokenData) => {
       let user = User.find(tokenData.uid);
       let devices = JSON.parse(request.body.devices);
+      let hubState = JSON.parse(request.body.hub_state);
       let redirect = util.format('/configuration?accessToken=%s', accessToken);
 
       user.setDevices(devices);
+      user.setHubState(hubState);
 
       return reply.redirect(redirect);
     }   
