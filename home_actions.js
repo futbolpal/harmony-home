@@ -29,7 +29,7 @@ const processCapture = (request, reply) => {
 
 const requireConfiguration = (request, response) => {
   const app = new ActionsSdkApp({request, response});
-  const redirect_uri = util.format('%s/configuration?user_id=%s', 
+  const redirect_uri = util.format('%s/configuration?accessToken=%s', 
       process.env.DEPLOY_DOMAIN,
       app.getUser().access_token
       );

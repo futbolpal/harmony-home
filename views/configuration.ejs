@@ -9,7 +9,7 @@
 </head>
 <body>
   <form id="configuration-post" action="/configuration" method="post">
-    <input type="hidden" name="user_id" value="<%= user_id %>" />
+    <input type="hidden" name="access_token" value="<%= accessToken %>" />
     <textarea name="devices" style="width:100%"><%= devices %></textarea>
     <input type="submit" />
   </form>
