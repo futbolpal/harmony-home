@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "main": "server.js",
   "scripts": {
-    "test": "jasmine"
+    "test": "jasmine",
+    "watch:test": "nodemon --exec 'jasmine'"
   },
   "author": "",
   "license": "ISC",
@@ -17,18 +18,21 @@
     "google-id-token-verifier": "0.2.3",
     "harmonyHubCLI": "^1.1.0",
     "harmonyhubjs-client": "^1.1.10",
-    "jasmine-spec-reporter": "4.2.1",
     "newrelic": "^2.1.0",
     "q": "^1.5.0",
     "redis": "^2.8.0",
-    "sinon": "4.1.2",
     "underscore": "^1.8.3",
     "underscore.string": "^3.3.4"
   },
   "devDependencies": {
+    "jasmine-expect": "3.8.1",
+    "jasmine-matchers": "0.2.3",
+    "jasmine-spec-reporter": "4.2.1",
     "jasmine": "2.8.0",
     "md5": "2.2.1",
     "request-promise-native": "1.0.5",
+    "rewire": "3.0.2",
+    "sinon": "4.1.2",
     "sha1": "1.1.1",
     "shelljs": "0.7.8"
   }
