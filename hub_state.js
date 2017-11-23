@@ -77,24 +77,26 @@ hubState.deviceByName = (deviceName) => {
   });
 }
 
-// Connect to harmony
-new HarmonyUtils(process.env.IP || '192.168.0.23').then((hutils) => {
-  console.log("Connected to harmony hub");
-  hubState.hub = hutils
-
-  hubState.refresh();
-  setInterval(hubState.refresh, process.env.REFRESH_HUB || 60000); 
-  setInterval(() => {
-    hubState.hub.readCurrentActivity().then((response) => { 
-      if(response == 'PowerOff'){
-        console.log("Activity was " + response) 
+hubState.forceDefaultRemote = () => {
+  hubState.hub.readCurrentActivity().then((response) => { 
+    if(response == 'PowerOff'){
+      console.log("Activity was " + response) 
         hubState.hub.executeActivity('Default').then((response) => { console.log(response) });;
-      }
-    });
-  }, 5000);
+    }
+  });
+}
 
-});
+hubState.init = () => {
+  // Connect to harmony
+  new HarmonyUtils(process.env.IP || '192.168.0.23').then((hutils) => {
+    console.log("Connected to harmony hub");
+    hubState.hub = hutils
 
-RedisClient.on("ready", () => { hubState.load() });
+    hubState.refresh();
+    setInterval(hubState.refresh, process.env.REFRESH_HUB || 60000); 
+    setInterval(hubState.forceDefaultRemote, 5000);
+
+  });
+}
 
 module.exports = hubState;
