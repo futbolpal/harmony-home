@@ -27,6 +27,7 @@ const retrieveAuth = (code) => {
 };
 
 const verifyToken = (data) => {
+  console.log("I should verify", data);
   //TODO: Verify client id
   //TODO: Verify user 
   //TODO: Verify token type

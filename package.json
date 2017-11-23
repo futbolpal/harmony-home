@@ -25,15 +25,17 @@
     "underscore.string": "^3.3.4"
   },
   "devDependencies": {
+    "jasmine": "2.8.0",
     "jasmine-expect": "3.8.1",
     "jasmine-matchers": "0.2.3",
     "jasmine-spec-reporter": "4.2.1",
-    "jasmine": "2.8.0",
     "md5": "2.2.1",
+    "mock-redis-client": "0.91.13",
+    "redis-mock": "0.20.0",
     "request-promise-native": "1.0.5",
     "rewire": "3.0.2",
-    "sinon": "4.1.2",
     "sha1": "1.1.1",
-    "shelljs": "0.7.8"
+    "shelljs": "0.7.8",
+    "sinon": "4.1.2"
   }
 }

@@ -5,8 +5,10 @@ const rewire = require("rewire");
 const sinon = require('sinon');
 const Q = require ('q');
 const express = require('express');
-
+const RedisClient = require('mock-redis-client').createMockRedis().createClient();
 const uut = rewire('../../services/oauth');
+
+uut.__set__("RedisClient", RedisClient);
 
 describe("OAuth", function() {
   
@@ -36,5 +38,69 @@ describe("OAuth", function() {
     it("has a GET /token path", function(){
       expect(findRoute('/token','get')).toBeTruthy();
     });
+  });
+
+  describe('.generateIndex', function() {
+    let generateIndex = uut.__get__("generateIndex");
+    it("returns a string", function(){
+      expect(generateIndex()).toBeString();
+    });
+
+    it("returns a base64 string", function(){
+      var base64Matcher = new RegExp("^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{4})$");
+      expect(base64Matcher.test(generateIndex())).toBeTrue();
+    });
+  });
+  
+  describe('.upsertAuth', function() {
+    let upsertAuth = uut.__get__("upsertAuth");
+    let redisSetSpy = sinon.spy(uut.__get__("RedisClient"), "set");
+    let mockToken = 'my-token';
+    let mockData = { 'attribute': 'value' }
+    beforeEach(function(){
+      upsertAuth(mockToken, mockData)
+    });
+    it('creates a key with a token and stringified JSON', function(){
+      expect(redisSetSpy.withArgs("oauth:my-token", JSON.stringify(mockData)).calledOnce).toBeTrue(); 
+    });
+  });
+
+
+  describe('.retrieveAuth', function(){
+    let retrieveAuth = uut.__get__("retrieveAuth");
+    let mockToken = 'my-token';
+    let mockData = { 'attribute': 'value' }
+
+    beforeAll(function(){
+      sinon.stub(RedisClient, 'get').callsFake((k,cb) => {
+        if(k == mockToken) { return cb(null, mockData) };
+        return cb('error', null)
+      });
+    });
+
+    it("resolves null when token is not found", function(){
+      retrieveAuth('no-haz-code').then(tokenData => {
+        expect(tokenData).toBeNull();
+      });
+    });
+
+    it("resolves the token data when it is found", function(){
+      retrieveAuth(mockToken).then(tokenData => {
+        expect(tokenData).toEqual(mockData);
+      });
+    });
+
+    it("resolves an error when one exists", function(){
+      retrieveAuth('no-haz-code').fail((error) => {
+        expect(error).toEqual('error');
+      });
+    });
+  });
+
+  describe('.verifyToken', function(){
+    it('ensures client id matches')
+    it('ensures user is valid')
+    it('ensures the token type is expected')
+    it('ensures the access token is present')
   });
 });
