@@ -1,14 +1,17 @@
-
 'use strict';
 
 const rewire = require("rewire");
 const sinon = require('sinon');
 const Q = require ('q');
 const express = require('express');
-const RedisClient = require('mock-redis-client').createMockRedis().createClient();
-const uut = rewire('../../services/oauth');
 
-uut.__set__("RedisClient", RedisClient);
+const redis = require('mock-redis-client').createMockRedis().createClient();
+const uut = rewire('../../services/oauth')
+uut.__set__("RedisClient", {
+  client : () => {
+    return redis;
+  }
+});
 
 describe("OAuth", function() {
   
@@ -54,7 +57,7 @@ describe("OAuth", function() {
   
   describe('.upsertAuth', function() {
     let upsertAuth = uut.__get__("upsertAuth");
-    let redisSetSpy = sinon.spy(uut.__get__("RedisClient"), "set");
+    let redisSetSpy = sinon.spy(redis, "set");
     let mockToken = 'my-token';
     let mockData = { 'attribute': 'value' }
     beforeEach(function(){
@@ -72,7 +75,7 @@ describe("OAuth", function() {
     let mockData = { 'attribute': 'value' }
 
     beforeAll(function(){
-      sinon.stub(RedisClient, 'get').callsFake((k,cb) => {
+      sinon.stub(redis, 'get').callsFake((k,cb) => {
         if(k == mockToken) { return cb(null, mockData) };
         return cb('error', null)
       });

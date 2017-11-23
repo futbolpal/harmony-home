@@ -15,7 +15,7 @@ Health.register = (server) => {
         app: "OK",
         hub: HubState.hub != null ? "OK" : "FAIL",
         newrelic: NewRelic.agent._state != 'errored' ? "OK" : "FAIL",
-        redis: RedisClient.connected ? "OK" : "FAIL"
+        redis: RedisClient.client().connected ? "OK" : "FAIL"
       })
     }
   });
