@@ -5,6 +5,15 @@ if(!process.env.DEPLOY_DOMAIN){
   process.exit(1);
 }
 
+if(!process.env.GOOGLE_CLIENT_ID){
+    console.log("Missing environment variable: GOOGLE_CLIENT_ID (only first segment before '.')");
+      process.exit(1);
+}
+if(!process.env.GOOGLE_CLIENT_SECRET){
+    console.log("Missing environment variable: GOOGLE_CLIENT_SECRET");
+      process.exit(1);
+}
+
 const fs = require('fs');
 const actionPackage = {
   "actions": [
