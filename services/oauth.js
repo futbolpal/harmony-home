@@ -13,12 +13,12 @@ const generateIndex = () => {
 };
 
 const upsertAuth = (code,data) => {
-  RedisClient.set(`oauth:${code}`, JSON.stringify(data));
+  RedisClient.client().set(`oauth:${code}`, JSON.stringify(data));
 };
 
 const retrieveAuth = (code) => {
   const d = Q.defer();
-  RedisClient.get(`oauth:${code}`, (error, reply) => {
+  RedisClient.client().get(`oauth:${code}`, (error, reply) => {
     if(error) d.reject(error);
     if(reply) d.resolve(JSON.parse(reply));
     d.resolve(null);
@@ -27,6 +27,7 @@ const retrieveAuth = (code) => {
 };
 
 const verifyToken = (data) => {
+  console.log("I should verify", data);
   //TODO: Verify client id
   //TODO: Verify user 
   //TODO: Verify token type

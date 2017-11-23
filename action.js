@@ -254,10 +254,13 @@ const actionPackage = {
     }
 }
 
-const content = JSON.stringify(actionPackage);
-fs.writeFile("action.json", content, 'utf8', function (err) {
-  if (err) {
-    return console.log(err);
-  }
-  console.log("action.json package generated");
-}); 
+if (require.main === module) {
+  const content = JSON.stringify(actionPackage);
+  fs.writeFile("action.json", content, 'utf8', function (err) {
+    if (err) {
+      return console.log(err);
+    }
+    console.log("action.json package generated");
+  }); 
+}
+module.exports = actionPackage;

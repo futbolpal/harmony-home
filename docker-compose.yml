@@ -1,6 +1,6 @@
 version: '2'
 services: 
-  web:
+  web: &web
     build: .
     env_file: .env
     depends_on:
@@ -11,4 +11,15 @@ services:
     image: redis:alpine
     ports:
       - "6379"
-
+  mock-web:
+    <<: *web
+    env_file: .env.ci
+    volumes: 
+      - ./mocks:/usr/mocks
+  mock: 
+    build: .
+    env_file: .env.ci
+    depends_on:
+      - "mock-web"
+    volumes: 
+      - ./mocks:/usr/mocks

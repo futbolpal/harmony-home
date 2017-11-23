@@ -10,9 +10,23 @@ const TvControl = require('./handlers/tv_control');
 
 const HomeActions = {}
 
+const processCapture = (request, reply) => {
+  let intent = request.body.inputs[0];
+  console.log('request.body', request.body);
+  const fs = require('fs');
+  const md5 = require('md5');
+  const path = intent.intent.replace(/\./g, '/');
+  const contents = JSON.stringify(request.body, null, ' ');
+  const hash = md5(intent.raw_inputs[0].query);
+  fs.writeFile(`mocks/${path}/sample-${hash}.json`, contents, function(err) {
+    return reply.json("OK");
+  });
+}
+
 const processGh = (request, reply) => {
   console.log('POST /gh');
   let conversationToken = request.body.conversation.conversationToken;
+  if(process.env.CAPTURE) { return processCapture(request, reply) }
   for(let i = 0; i < request.body.inputs.length; i++){
     let intent = request.body.inputs[0];
     if(Intents.INTENT_GROUP_CLIMATE_CONTROL.includes(intent.intent)){

@@ -1,0 +1,40 @@
+{
+  "user": {
+    "user_id": "AA9douZPaYbKS6OVl-T-NBl6xZua",
+    "permissions": [],
+    "locale": "en-US"
+  },
+  "conversation": {
+    "conversation_id": "1506223197567",
+    "type": 1
+  },
+  "inputs": [
+    {
+      "intent": "com.harmony-home.intent.tv.on",
+      "raw_inputs": [
+        {
+          "input_type": 2,
+          "query": "tell harmony home staging turn on the tv",
+          "annotation_sets": []
+        }
+      ],
+      "arguments": [
+        {
+          "name": "trigger_query",
+          "raw_text": "turn on the tv",
+          "text_value": "turn on the tv"
+        }
+      ]
+    }
+  ],
+  "surface": {
+    "capabilities": [
+      {
+        "name": "actions.capability.AUDIO_OUTPUT"
+      }
+    ]
+  },
+  "device": {},
+  "is_in_sandbox": true,
+  "available_surfaces": []
+}

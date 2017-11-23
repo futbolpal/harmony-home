@@ -6,10 +6,13 @@ const s = require("underscore.string");
 const Express = require('express');
 
 const Health = require('./health');
+const HubState = require('./hub_state');
 const HomeAutomation = require('./home_automation');
 const HomeActions = require('./home_actions');
+const RedisClient = require('./redis_client');
 const OAuth = require('./services/oauth');
 const BodyParser = require('body-parser')
+
 const server = Express();
 server.set('view engine', 'ejs');
 server.set('port', +process.env.PORT || 3000);
@@ -26,3 +29,6 @@ OAuth.register(server);
 
 // Start the server
 server.listen(server.get('port'));
+
+RedisClient.client();
+HubState.init();
