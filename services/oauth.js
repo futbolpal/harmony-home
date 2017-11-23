@@ -129,9 +129,9 @@ OAuth.register = (server) => {
         client_id: client_id,
         expires_at: new Date(Date.now() + (60 * 10000))
       });
-      return reply.redirect(util.format('%s?code=%s&state=%s',
-            decodeURIComponent(redirect_uri), auth_code, state)
-          );
+      let redirect = util.format('%s?code=%s&state=%s', decodeURIComponent(redirect_uri), auth_code, state);
+      console.log('redirecting', redirect);
+      return reply.redirect(redirect);
     });
   });
 
@@ -165,4 +165,5 @@ OAuth.register = (server) => {
   }); 
 }
 
+OAuth.retrieveAuth = retrieveAuth
 module.exports = OAuth;

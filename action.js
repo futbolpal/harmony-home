@@ -5,6 +5,15 @@ if(!process.env.DEPLOY_DOMAIN){
   process.exit(1);
 }
 
+if(!process.env.GOOGLE_CLIENT_ID){
+    console.log("Missing environment variable: GOOGLE_CLIENT_ID (only first segment before '.')");
+      process.exit(1);
+}
+if(!process.env.GOOGLE_CLIENT_SECRET){
+    console.log("Missing environment variable: GOOGLE_CLIENT_SECRET");
+      process.exit(1);
+}
+
 const fs = require('fs');
 const actionPackage = {
   "actions": [
@@ -15,7 +24,8 @@ const actionPackage = {
       },
       "intent": {
         "name" : "actions.intent.MAIN"
-      }
+      },
+      "signInRequired": true
     },
     {
       "name": "com.harmony-home.climate-control.temperature.adjust",
@@ -40,7 +50,8 @@ const actionPackage = {
             "turn down (the)? temp (by)? $SchemaOrg_Number:temperature (degrees)?"
           ]
         }
-      }
+      },
+      "signInRequired": true
     },
     {
       "name": "com.harmony-home.climate-control.temperature.up",
@@ -58,7 +69,8 @@ const actionPackage = {
             "turn down (the)? AC"
           ]
         }
-      }
+      },
+      "signInRequired": true
     },
     {
       "name": "com.harmony-home.climate-control.temperature.down",
@@ -76,7 +88,8 @@ const actionPackage = {
             "turn up the AC"
           ]
         }
-      }
+      },
+      "signInRequired": true
     },
     {
       "name": "com.harmony-home.climate-control.temperature.set",
@@ -95,7 +108,8 @@ const actionPackage = {
             "set (the)? temperature to $SchemaOrg_Number:temperature degrees"
           ]
         }
-      }
+      },
+      "signInRequired": true
     },
     {
       "name": "com.harmony-home.climate-control.temperature.reset",
@@ -116,7 +130,8 @@ const actionPackage = {
             "(the)? temperature is currently set to $SchemaOrg_Number:temperature degrees"
           ]
         }
-      }
+      },
+      "signInRequired": true
     },
     {
       "name": "com.harmony-home.climate-control.temperature.status",
@@ -131,7 +146,8 @@ const actionPackage = {
             "what is (the)? current temperature"
           ]
         }
-      }
+      },
+      "signInRequired": true
     },
     {
       "name": "com.harmony-home.climate-control.on",
@@ -145,7 +161,8 @@ const actionPackage = {
             "turn on (the)? AC"
           ]
         }
-      }
+      },
+      "signInRequired": true
     },
     {
       "name": "com.harmony-home.climate-control.off",
@@ -159,7 +176,8 @@ const actionPackage = {
             "turn off (the)? AC"
           ]
         }
-      }
+      },
+      "signInRequired": true
     },
     {
       "name": "com.harmony-home.tv.on",
@@ -173,7 +191,8 @@ const actionPackage = {
             "turn on (the)? tv"
           ]
         }
-      }
+      },
+      "signInRequired": true	
     },
     {
       "name": "com.harmony-home.tv.off",
@@ -187,7 +206,8 @@ const actionPackage = {
             "turn off (the)? tv"
           ]
         }
-      }
+      },
+      "signInRequired": true
     },
     {
       "name": "com.harmony-home.tv.mute",
@@ -201,7 +221,8 @@ const actionPackage = {
             "mute (the)? tv"
           ]
         }
-      }
+      },
+      "signInRequired": true
     },
     {
       "name": "com.harmony-home.tv.volume.up",
@@ -216,7 +237,8 @@ const actionPackage = {
             "turn up (the)? volume on (the)? tv"
           ]
         }
-      }
+      },
+      "signInRequired": true
     },
     {
       "name": "com.harmony-home.tv.volume.down",
@@ -231,7 +253,8 @@ const actionPackage = {
             "turn down (the)? volume on (the)? tv"
           ]
         }
-      }
+      },
+      "signInRequired": true
     },
     {
       "name": "actions.devices",
@@ -239,19 +262,32 @@ const actionPackage = {
       },
       "fulfillment": {
         "conversationName": "automation"
-      }
-    }],
-    "conversations": {
-      "harmony-home": {
-        "name": "harmony-home",
-        "url": process.env.DEPLOY_DOMAIN + "/gh"
       },
-      "automation" :
-      {
-        "name": "automation",
-        "url": process.env.DEPLOY_DOMAIN + "/ha"
-      }
+      "signInRequired": true
     }
+	],
+	"conversations": {
+		"harmony-home": {
+			"name": "harmony-home",
+			"url": process.env.DEPLOY_DOMAIN + "/gh",
+			"fulfillmentApiVersion": 2
+		},
+		"automation" :
+		{
+			"name": "automation",
+			"url": process.env.DEPLOY_DOMAIN + "/ha"
+		}
+	},
+	"accountLinking" : {
+		"clientId": process.env.GOOGLE_CLIENT_ID,
+		"clientSecret": process.env.GOOGLE_CLIENT_SECRET,
+		"grantType": "AUTH_CODE",
+		"authenticationUrl": process.env.DEPLOY_DOMAIN + "/auth",
+		"accessTokenUrl": process.env.DEPLOY_DOMAIN + "/token",
+		"scopes": ["profile","email"],
+		"scopeExplanationUrl": "",
+		"assertionTypes": ["ID_TOKEN"]
+	}
 }
 
 if (require.main === module) {
