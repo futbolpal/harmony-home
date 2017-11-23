@@ -16,11 +16,12 @@ Configuration.register = (server) => {
     console.log("GET /configuration");
     let accessToken = request.query.accessToken
     const withUser = (tokenData) => {
-      let user = User.find_or_create(tokenData.uid);
-      return reply.render('configuration', {
-        accessToken: accessToken,
-        devices: JSON.stringify(user.devices),
-        hubState: JSON.stringify(user.hubState)
+      User.find_or_create(tokenData.uid).then((user) => {
+        return reply.render('configuration', {
+          accessToken: accessToken,
+          devices: JSON.stringify(user.attributes.devices),
+          hubState: JSON.stringify(user.attributes.hubState)
+        });
       });
     }
     const withoutUser = () => { askForSignIn(request, reply); }
@@ -31,15 +32,17 @@ Configuration.register = (server) => {
     console.log('POST /configuration')
     let accessToken = request.body.access_token;
     const withUser = (tokenData) => {
-      let user = User.find(tokenData.uid);
-      let devices = JSON.parse(request.body.devices);
-      let hubState = JSON.parse(request.body.hub_state);
-      let redirect = util.format('/configuration?accessToken=%s', accessToken);
+      User.find(tokenData.uid).then((user) => {
+        let hubState = JSON.parse(request.body.hub_state);
+        let devices = JSON.parse(request.body.devices);
+        let redirect = util.format('/configuration?accessToken=%s', accessToken);
+               
+        user.setHubState(hubState);
+        user.setDevices(devices);
+        user.save();
 
-      user.setDevices(devices);
-      user.setHubState(hubState);
-
-      return reply.redirect(redirect);
+        return reply.redirect(redirect);
+      });
     }   
     const withoutUser = () => { askForSignIn(request, reply); }
     OAuth.retrieveAuth(accessToken).then(withUser, withoutUser);

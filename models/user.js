@@ -1,63 +1,60 @@
 'use strict';
 
 const util = require('util');
+const Q = require('q');
+const RedisClient = require('../redis_client');
 
 const User = {}
 
-const userDb = {
-  'my-id': {
-    hubState: {
-      hub : null,
-      ip : '192.168.0.23',
-      state : {
-        simulate : false,
-        climate_control : {
-          online : false,
-          temp : 70
-        },
-      }
-    },
-    devices: [{
-      handler: 'climate_control',
-      name: 'Friedrich Climate Control',
-      commands: {
-        POWER : "PowerToggle",
-        UP : "Temp+",
-        DOWN : "Temp-"
-      }
-    },{
-      handler: 'tv_control',
-      name: 'TV',
-      commands: {
-        POWER_ON: "PowerOn",
-        POWER_OFF: "PowerOff",
-        VOLUME_UP: "VolumeUp",
-        VOLUME_DOWN: "VolumeDown",
-        MUTE: "Mute"
-      }
-    }]
+const writeUser = (id, data) => {
+  console.log('redis:user:set', id, data);
+  RedisClient.set(`users:${id}`, JSON.stringify(data));
+};
+
+const retrieveUser = (id) => {
+  const d = Q.defer();
+  RedisClient.get(`users:${id}`, (error, reply) => {
+    console.log('redis:user:get', error,reply);
+    if(error) d.reject(id, error);
+    if(reply) d.resolve(instantiateUser(id, JSON.parse(reply)));
+    d.reject(id, null);
+  });
+  return d.promise;
+};
+
+const instantiateUser = (id, data) => {
+  console.log('instantiateUser', id, data);
+  let user = Object.assign({id: id}, {attributes: data});
+
+  user.deviceByHandler = (handler) => {
+    return user.attributes.devices.find((d) => { return d.handler == handler });
   }
+
+  user.setDevices = (devices) => {
+    user.attributes.devices = devices;
+    console.log('user',user);
+  }
+
+  user.setHubState = (hubState) => {
+    user.attributes.hubState = hubState;
+  }
+
+  user.save = () => {
+    writeUser(user.id, user.attributes);
+  }
+ 
+  return user;
 }
 
 User.find = (id) => {
-  if(!userDb[id]) { return null }
-  let user = Object.assign({}, userDb[id]);
-  user.id = id;
-  user.deviceByHandler = (handler) => {
-    return user.devices.find((d) => { return d.handler == handler });
-  }
-  user.setDevices = (devices) => {
-    userDb[user.id].devices = devices;
-  }
-  return user; 
+  return retrieveUser(id)
 }
 
 User.find_or_create = (id) => {
-  if(userDb[id]) { return User.find(id) }
-  userDb[id] = {
-    hubState: {},
-    devices: []
-  }
-  return User.find(id); 
+  return retrieveUser(id).fail(() => {
+    let user = instantiateUser(id, {});
+    writeUser(id, {});
+    return user;
+  });
 }
 module.exports = User;

@@ -74,9 +74,10 @@ const processGh = (request, reply) => {
 const handleGh = (request, reply) => {
   console.log('POST /gh');
   const withUser = (tokenData) => {
-    let user = User.find(tokenData.uid);
-    if(!user) { return requireConfiguration(request, reply); }
-    return processGh(request, reply, user);
+    User.find(tokenData.uid).then((user) => {
+      if(!user) { return requireConfiguration(request, reply); }
+      return processGh(request, reply, user);
+    });
   }
   const withoutUser = () => {
     const app = new ActionsSdkApp({request: request, response: reply});
