@@ -47,7 +47,6 @@ const requireConfiguration = (request, response) => {
 }
 
 const processGh = (request, reply) => {
-  if(process.env.CAPTURE) { return processCapture(request, reply) }
   const app = new ActionsSdkApp({request: request, response: reply});
   if(!request.body.user.accessToken) {
     return app.askForSignIn();
@@ -73,6 +72,7 @@ const processGh = (request, reply) => {
 
 const handleGh = (request, reply) => {
   console.log('POST /gh');
+  if(process.env.CAPTURE) { return processCapture(request, reply) }
   const withUser = (tokenData) => {
     User.find(tokenData.uid).then((user) => {
       if(!user) { return requireConfiguration(request, reply); }
