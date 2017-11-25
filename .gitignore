@@ -3,6 +3,7 @@
 .env*
 newrelic_agent.log
 node_modules
+coverage
 npm-debug.log
 creds.data
 action.json

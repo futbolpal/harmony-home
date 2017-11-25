@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "main": "server.js",
   "scripts": {
-    "test": "jasmine",
-    "watch:test": "nodemon --exec 'jasmine'"
+    "test": "istanbul cover --include-all-sources jasmine",
+    "watch:test": "nodemon --exec 'npm test'"
   },
   "author": "",
   "license": "ISC",
@@ -25,6 +25,7 @@
     "underscore.string": "^3.3.4"
   },
   "devDependencies": {
+    "istanbul": "0.4.5",
     "jasmine": "2.8.0",
     "jasmine-expect": "3.8.1",
     "jasmine-matchers": "0.2.3",

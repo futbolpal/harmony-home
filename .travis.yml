@@ -4,3 +4,6 @@ node_js:
   - "lts/*"
   - "8"
   - "7"
+
+after_success:
+  - codeclimate < ./coverage/lcov.info
