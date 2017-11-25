@@ -1,3 +1,6 @@
+[![Maintainability](https://api.codeclimate.com/v1/badges/48729c036f1c631f98d6/maintainability)](https://codeclimate.com/github/futbolpal/harmony-home/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/48729c036f1c631f98d6/test_coverage)](https://codeclimate.com/github/futbolpal/harmony-home/test_coverage)
+
 # Harmony Hub
 
 This service allows Harmony Hub to be controlled by [Google Actions SDK](https://developers.google.com/actions/).  It fulfills `Intents` that originated from the API.AI application and translates them into Harmony Hub commands
