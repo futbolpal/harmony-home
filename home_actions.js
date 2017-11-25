@@ -14,6 +14,11 @@ const OAuth       = require('./services/oauth');
 
 const HomeActions = {}
 
+const askForSignIn = (request, reply) => {
+  const app = new ActionsSdkApp({request: request, response: reply});
+  return app.askForSignIn();
+};
+
 const processCapture = (request, reply) => {
   let intent = request.body.inputs[0];
   console.log('request.body', request.body);
@@ -48,10 +53,6 @@ const requireConfiguration = (request, response) => {
 
 const processGh = (request, reply, user) => {
   console.log('processGh');
-  const app = new ActionsSdkApp({request: request, response: reply});
-  if(!request.body.user.accessToken) {
-    return app.askForSignIn();
-  }
   let conversationToken = request.body.conversation.conversationId;
   for(let i = 0; i < request.body.inputs.length; i++){
     let intent = request.body.inputs[0];
@@ -69,22 +70,24 @@ const processGh = (request, reply, user) => {
 }
 
 const handleGh = (request, reply) => {
-  console.log('POST /gh');
-  if(process.env.CAPTURE) { return processCapture(request, reply) }
+  console.log('handleGh');
   const withUser = (tokenData) => {
-    User.find(tokenData.uid).then((user) => {
+    return User.find(tokenData.uid).then((user) => {
       return processGh(request, reply, user);
     }, () => { return requireConfiguration(request, reply); });
   }
   const withoutUser = () => {
-    const app = new ActionsSdkApp({request: request, response: reply});
-    return app.askForSignIn();
+    return askForSignIn(request, reply);
   }
   let accessToken = request.body.user.accessToken;
-  OAuth.retrieveAuth(accessToken).then(withUser, withoutUser);
+  return OAuth.retrieveAuth(accessToken).then(withUser, withoutUser);
 };
 
 HomeActions.register = (server) => {
-  server.post('/gh', handleGh);
+  server.post('/gh', (request, reply) => {
+    console.log('POST /gh');
+    if(process.env.CAPTURE) { return processCapture(request, reply) }
+    handleGh(request, reply);
+  });
 };
 module.exports = HomeActions;

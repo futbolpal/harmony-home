@@ -4,9 +4,9 @@
     "**/*[sS]pec.js"
   ],
   "helpers": [
-    "helpers/**/*.js",
-    "../node_modules/jasmine-expect/index.js"
+    "../node_modules/jasmine-expect/index.js",
+    "helpers/**/*.js"
   ],
   "stopSpecOnExpectationFailure": false,
-  "random": false
+  "random": true
 }
