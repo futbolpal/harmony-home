@@ -25,6 +25,8 @@
     "underscore.string": "^3.3.4"
   },
   "devDependencies": {
+    "codeclimate": "0.0.32",
+    "codeclimate-test-reporter": "0.5.0",
     "istanbul": "0.4.5",
     "jasmine": "2.8.0",
     "jasmine-expect": "3.8.1",

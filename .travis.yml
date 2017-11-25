@@ -5,5 +5,10 @@ node_js:
   - "8"
   - "7"
 
+before_script:
+  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+  - chmod +x ./cc-test-reporter
+  - ./cc-test-reporter before-build
+
 after_success:
-  - codeclimate < ./coverage/lcov.info
+  - ./cc-test-reporter after-build
