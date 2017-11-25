@@ -56,7 +56,7 @@ const handleClimateControl = (hubState, context, request, reply) => {
     commandDeferred.resolve();
     commandPromise = commandDeferred.promise;
   }
-  commandPromise.then((response) => {
+  return commandPromise.then((response) => {
     if(typeof(intentResponse) === 'function'){
       return intentResponse(hubState, conversationToken, intent, request, reply, device, deviceConfiguration);
     } else {
