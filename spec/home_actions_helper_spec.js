@@ -7,13 +7,12 @@ const uut = require('../home_actions_helper');
 describe("HomeActionsHelper", function() {
   describe(".repeatCommands", function() {
     let callback = sinon.spy();
+    let delaySpy = sinon.spy(Q, 'delay');
     let times = 1, delay = 100;
 
-    beforeEach(function () {
-      sinon.stub(process, 'nextTick').yields();
-    });
-    afterEach(function () {
-      process.nextTick.restore();
+    beforeEach(function(){
+      delaySpy.reset();
+      callback.reset();
     });
 
     describe("callback", function() {
@@ -25,7 +24,6 @@ describe("HomeActionsHelper", function() {
     });
 
     describe("delay", function() {
-      let delaySpy = sinon.spy(Q, 'delay');
       it("executes without intial delay", function() {
         uut.repeatCommands(times, delay, callback).then((a) => {
           expect(delaySpy.withArgs(delay).callCount).toBe(times - 1);

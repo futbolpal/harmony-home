@@ -19,7 +19,7 @@ uut.__set__("RedisClient", {
 });
 
 describe("HomeActions", function() {
-  let sandbox;
+  let sandbox = sinon.sandbox.create();
   let request = {
     body: {
       user: {},
@@ -29,7 +29,6 @@ describe("HomeActions", function() {
   }
   let reply;
   beforeEach(function() {
-    sandbox = sinon.sandbox.create();
     reply = sinon.stub();
   });
   afterEach(function() {
@@ -56,12 +55,18 @@ describe("HomeActions", function() {
     let processGh = uut.__get__("processGh");
     let user = {};
     let climateControlStub, tvControlStub;
+    let restoreTvControl, restoreClimateControl;
 
     beforeEach(function() {
       tvControlStub = sandbox.stub();
       climateControlStub = sandbox.stub();
-      uut.__set__("ClimateControl", climateControlStub);
-      uut.__set__("TvControl", tvControlStub);
+      restoreClimateControl = uut.__set__("ClimateControl", climateControlStub);
+      restoreTvControl = uut.__set__("TvControl", tvControlStub);
+    });
+
+    afterEach(function(){
+      restoreTvControl();
+      restoreClimateControl();
     });
 
     it("delegates to climate handler when intent is one within the climate handler", function(){
@@ -87,6 +92,7 @@ describe("HomeActions", function() {
 
     describe("when auth token is not found", function() {
       let askForSignInStub;
+      let restoreAskForSignIn;
 
       beforeEach(function(){
         askForSignInStub = sandbox.stub();
@@ -96,7 +102,11 @@ describe("HomeActions", function() {
           return d.promise;
         });
 
-        uut.__set__("askForSignIn", askForSignInStub)
+        restoreAskForSignIn = uut.__set__("askForSignIn", askForSignInStub)
+      });
+
+      afterEach(function(){
+        restoreAskForSignIn();
       });
 
       it("asks for sign in", function(done) {
@@ -119,15 +129,20 @@ describe("HomeActions", function() {
 
       describe("when no user is configured", function() {
         let requireConfigurationStub;
+        let restoreRequireConfiguration;
         beforeEach(function(){
           requireConfigurationStub = sandbox.stub();
-          uut.__set__("requireConfiguration", requireConfigurationStub)
+          restoreRequireConfiguration = uut.__set__("requireConfiguration", requireConfigurationStub)
 
           sandbox.stub(User, "find").callsFake((token) => {
             const d = Q.defer();
             d.reject(null);
             return d.promise;
           });
+        });
+
+        afterEach(function(){
+          restoreRequireConfiguration();
         });
 
         it("calls requireConfiguration", function(done) {
@@ -140,17 +155,22 @@ describe("HomeActions", function() {
 
       describe("when the user is configured", function() {
         let processGhStub;
+        let restoreProcessGh;
         let userData = {};
 
         beforeEach(function(){
           processGhStub = sandbox.stub();
-          uut.__set__("processGh", processGhStub)
+          restoreProcessGh = uut.__set__("processGh", processGhStub)
 
           sandbox.stub(User, "find").callsFake((token) => {
             const d = Q.defer();
             d.resolve(userData);
             return d.promise;
           });
+        });
+
+        afterEach(function(){
+          restoreProcessGh();
         });
  
         it("calls proessGh with a valid user", function(done){
