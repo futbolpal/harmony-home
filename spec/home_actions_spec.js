@@ -84,6 +84,7 @@ describe("HomeActions", function() {
 
   describe("handleGh", function() {
     let handleGh = uut.__get__("handleGh");
+
     describe("when auth token is not found", function() {
       let askForSignInStub;
 
@@ -121,7 +122,14 @@ describe("HomeActions", function() {
         beforeEach(function(){
           requireConfigurationStub = sandbox.stub();
           uut.__set__("requireConfiguration", requireConfigurationStub)
+
+          sandbox.stub(User, "find").callsFake((token) => {
+            const d = Q.defer();
+            d.reject(null);
+            return d.promise;
+          });
         });
+
         it("calls requireConfiguration", function(done) {
           handleGh(request, reply).then(() => {
             expect(requireConfigurationStub.calledOnce).toBeTrue();
