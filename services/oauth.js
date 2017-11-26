@@ -21,7 +21,7 @@ const retrieveAuth = (code) => {
   RedisClient.client().get(`oauth:${code}`, (error, reply) => {
     if(error) d.reject(error);
     if(reply) d.resolve(JSON.parse(reply));
-    d.resolve(null);
+    d.reject(null);
   });
   return d.promise;
 };
