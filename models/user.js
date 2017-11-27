@@ -15,9 +15,9 @@ const retrieveUser = (id) => {
   const d = Q.defer();
   RedisClient.client().get(`users:${id}`, (error, reply) => {
     console.log('redis:user:get', id, error,reply);
-    if(error) d.reject(id, error);
-    if(reply) d.resolve(instantiateUser(id, JSON.parse(reply)));
-    d.reject(id, null);
+    if(error) return d.reject(error);
+    if(reply) return d.resolve(instantiateUser(id, JSON.parse(reply)));
+    return d.reject(null);
   });
   return d.promise;
 };
@@ -27,7 +27,7 @@ const instantiateUser = (id, data) => {
   let user = Object.assign({id: id}, {attributes: data});
 
   user.deviceByHandler = (handler) => {
-    return user.attributes.devices.find((d) => { return d.handler == handler });
+    return user.attributes.devices.find((d) => { return d.handler == handler }) || null;
   }
 
   user.setDevices = (devices) => {

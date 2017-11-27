@@ -32,6 +32,7 @@
     "jasmine-expect": "3.8.1",
     "jasmine-matchers": "0.2.3",
     "jasmine-spec-reporter": "4.2.1",
+    "jasmine2-custom-message": "0.8.4",
     "md5": "2.2.1",
     "mock-redis-client": "0.91.13",
     "redis-mock": "0.20.0",

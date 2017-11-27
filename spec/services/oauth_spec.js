@@ -14,7 +14,14 @@ uut.__set__("RedisClient", {
 });
 
 describe("OAuth", function() {
-  
+  let sandbox;
+  beforeEach(function(){
+    sandbox = sinon.sandbox.create();
+  });
+  afterEach(function(){
+    sandbox.restore();
+  });
+
   describe("routes", function() {
     let app = express();
     let findRoute = (path, method) => {
@@ -56,11 +63,12 @@ describe("OAuth", function() {
   });
   
   describe('.upsertAuth', function() {
+    let redisSetSpy;
     let upsertAuth = uut.__get__("upsertAuth");
-    let redisSetSpy = sinon.spy(redis, "set");
     let mockToken = 'my-token';
     let mockData = { 'attribute': 'value' }
     beforeEach(function(){
+      redisSetSpy = sandbox.spy(redis, "set");
       upsertAuth(mockToken, mockData)
     });
     it('creates a key with a token and stringified JSON', function(){
@@ -74,8 +82,8 @@ describe("OAuth", function() {
     let mockToken = 'my-token';
     let mockData = { 'attribute': 'value' }
 
-    beforeAll(function(){
-      sinon.stub(redis, 'get').callsFake((k,cb) => {
+    beforeEach(function(){
+      sandbox.stub(redis, 'get').callsFake((k,cb) => {
         if(k == mockToken) { return cb(null, mockData) };
         return cb('error', null)
       });
