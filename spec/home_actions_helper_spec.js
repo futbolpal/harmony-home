@@ -18,7 +18,7 @@ describe("HomeActionsHelper", function() {
     describe("callback", function() {
       it("repeats the correct number of times", function() {
         uut.repeatCommands(times, delay, callback).then((a) => {
-          expect(callback.callCount).toBe(times);
+          since("A").expect(callback.callCount).toBe(times);
         });
       });
     });
@@ -26,14 +26,14 @@ describe("HomeActionsHelper", function() {
     describe("delay", function() {
       it("executes without intial delay", function() {
         uut.repeatCommands(times, delay, callback).then((a) => {
-          expect(delaySpy.withArgs(delay).callCount).toBe(times - 1);
+          since("B").expect(delaySpy.withArgs(delay).callCount).toBe(times - 1);
         });
       });
    
       it("executes executes delay times - 1", function() {
         let times = 3;
         uut.repeatCommands(times, delay, callback).then((a) => {
-          expect(delaySpy.withArgs(delay).callCount).toBe(times - 1);
+          since("C").expect(delaySpy.withArgs(delay).callCount).toBe(times - 1);
         });
       });
     }); 
