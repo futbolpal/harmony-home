@@ -3,9 +3,6 @@
   "scripts": {
   },
   "env": {
-    "IP": {
-      "required": true
-    },
     "NEW_RELIC_LICENSE_KEY": {
       "required": true
     },
