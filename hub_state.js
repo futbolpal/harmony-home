@@ -21,7 +21,7 @@ const deviceById = (hub, deviceId) => {
     if (dev.id.toString() == deviceId) {
       return dev;
     }
-  });
+  }) || null;
 }
 
 const deviceByName = (hub, deviceName) => {
@@ -29,17 +29,24 @@ const deviceByName = (hub, deviceName) => {
     if (dev.label == deviceName) {
       return dev;
     }
-  });
+  }) || null;
 }
 
 const forceDefaultRemote = (hub) => {
+  let d = Q.defer();
   hub.readCurrentActivity().then((response) => { 
     console.log('current activity', response);
     if(response == 'PowerOff'){
-      console.log("Activity was " + response) 
-        hub.executeActivity('Default').then((response) => { console.log(response) });;
+      console.log("Activity was " + response);
+      hub.executeActivity('Default').then((response) => { 
+        console.log(response); 
+        d.resolve(response);
+      });
+    } else {
+      d.reject();
     }
   });
+  return d.promise;
 }
 
 const listDevices = (hub) => {
