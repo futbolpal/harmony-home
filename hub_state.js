@@ -4,10 +4,7 @@ const Q = require('q');
 const HarmonyUtils = require('harmony-hub-util');
 const RedisClient = require('./redis_client')
 
-const hubState = {
-};
-
-hubState.executeCommand = (hubState, simulate, is_device_cmd, act_or_dev_name, command) => {
+const executeCommand = (hubState, simulate, is_device_cmd, act_or_dev_name, command) => {
   if(simulate){
     console.log("Simulating command: ",is_device_cmd, act_or_dev_name, command);
     return new Promise((resolve, reject) =>{
@@ -19,7 +16,7 @@ hubState.executeCommand = (hubState, simulate, is_device_cmd, act_or_dev_name, c
   }
 }
 
-hubState.deviceById = (hub, deviceId) => {
+const deviceById = (hub, deviceId) => {
   return hub.state.devices.find(function (dev) {
     if (dev.id.toString() == deviceId) {
       return dev;
@@ -27,7 +24,7 @@ hubState.deviceById = (hub, deviceId) => {
   });
 }
 
-hubState.deviceByName = (hub, deviceName) => {
+const deviceByName = (hub, deviceName) => {
   return hub.state.devices.find(function (dev) {
     if (dev.label == deviceName) {
       return dev;
@@ -35,8 +32,9 @@ hubState.deviceByName = (hub, deviceName) => {
   });
 }
 
-hubState.forceDefaultRemote = (hub) => {
+const forceDefaultRemote = (hub) => {
   hub.readCurrentActivity().then((response) => { 
+    console.log('current activity', response);
     if(response == 'PowerOff'){
       console.log("Activity was " + response) 
         hub.executeActivity('Default').then((response) => { console.log(response) });;
@@ -44,33 +42,33 @@ hubState.forceDefaultRemote = (hub) => {
   });
 }
 
-hubState.listDevices = (hub) => {
+const listDevices = (hub) => {
   return hub._harmonyClient.getAvailableCommands().then(function(response){
     return response.device; 
   }); 
 }
 
-hubState.init = (ip) => {
+const init = (ip) => {
   const d = Q.defer();
   const h = {
     initialized: false,
     ip: ip,
     state: {},
     deviceById: (id) => { 
-      return hubState.deviceById(h, id) 
+      return deviceById(h, id) 
     },
     deviceByName: (name) => { 
-      return hubState.deviceByName(h, name) 
+      return deviceByName(h, name) 
     },
     forceDefaultRemote: () => {
-      return hubState.forceDefaultRemote(h._hub);
+      return forceDefaultRemote(h._hub);
     },
     executeCommand: (is_device_cmd, act_or_dev_name, command) => { 
-      return hubState.executeCommand(h._hub, h.simulate, is_device_cmd, act_or_dev_name, command);
+      return executeCommand(h._hub, h.simulate, is_device_cmd, act_or_dev_name, command);
     }
   }
   new HarmonyUtils(ip).then((hub) => {
-    hubState.listDevices(hub).then((devices) => {
+    listDevices(hub).then((devices) => {
       h.initialized = true;
       h.state.devices = devices;
       h._hub = hub;
@@ -80,4 +78,4 @@ hubState.init = (ip) => {
   return d.promise;
 }
 
-module.exports = hubState;
+module.exports = { init: init };
