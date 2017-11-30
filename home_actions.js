@@ -52,12 +52,6 @@ const requireConfiguration = (request, response) => {
       );
 }
 
-const initHubState = (user) => {
-  let d = Q.defer();
-  let ip = user.attributes.hubState.ip;
-  return HubState.init(ip);
-};
-
 const processGh = (request, reply, hubState, user) => {
   console.log('processGh');
   console.log('intents', request.body.inputs);
@@ -81,7 +75,10 @@ const handleGh = (request, reply) => {
   console.log('handleGh');
   const withUser = (tokenData) => {
     return User.find(tokenData.uid).then((user) => {
-      return initHubState(user).then((hub) => {
+      console.log('user', user);
+      let ip = user.attributes.hubState.ip;
+      console.log("IP", ip);
+      return HubState.init(ip).then((hub) => {
         processGh(request, reply, hub, user);
       });
     }, () => { return requireConfiguration(request, reply); });
