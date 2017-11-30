@@ -30,6 +30,17 @@ const instantiateUser = (id, data) => {
     return user.attributes.devices.find((d) => { return d.handler == handler }) || null;
   }
 
+  user.getHandlerData = (handler) => {
+    user.attributes.handlerData = user.attributes.handlerData || {};
+    return user.attributes.handlerData[handler] || {};
+  };
+
+  user.setHandlerData = (handler, data) => {
+    if(!user.attributes.handlerData) { user.attributes.handlerData = { handler: {} } }
+    if(!user.attributes.handlerData[handler]) { user.attributes.handlerData[handler] = {} }
+    return Object.assign(user.attributes.handlerData[handler], data);
+  }
+
   user.setDevices = (devices) => {
     user.attributes.devices = devices;
     console.log('user',user);
@@ -41,6 +52,7 @@ const instantiateUser = (id, data) => {
 
   user.save = () => {
     writeUser(user.id, user.attributes);
+    console.log('wrote user data', user.id, user.attributes);
   }
  
   return user;
