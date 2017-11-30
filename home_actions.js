@@ -1,5 +1,6 @@
 'use strict';
 
+const Q = require('q');
 const util = require('util');
 const NewRelic = require('newrelic');
 const RedisClient = require('./redis_client');
@@ -51,19 +52,26 @@ const requireConfiguration = (request, response) => {
       );
 }
 
-const processGh = (request, reply, user) => {
+const initHubState = (user) => {
+  let d = Q.defer();
+  let ip = user.attributes.hubState.ip;
+  return HubState.init(ip);
+};
+
+const processGh = (request, reply, hubState, user) => {
   console.log('processGh');
+  console.log('intents', request.body.inputs);
   let conversationToken = request.body.conversation.conversationId;
   for(let i = 0; i < request.body.inputs.length; i++){
     let intent = request.body.inputs[0];
-    let context = { intent, user, conversationToken };
+    let context = { hubState, intent, user, conversationToken };
     console.log('context', context);
     if(Intents.INTENT_GROUP_CLIMATE_CONTROL.includes(intent.intent)){
       console.log('climate_control');
-      return ClimateControl(HubState, context, request, reply);
+      return ClimateControl(context, request, reply);
     } else if(Intents.INTENT_GROUP_TV_CONTROL.includes(intent.intent)){
       console.log('tv_control');
-      return TvControl(HubState, context, request, reply);
+      return TvControl(context, request, reply);
     }
   }
   return reply.json(HomeActionsHelper.createSimpleReply(conversationToken, 'OK'));
@@ -73,7 +81,9 @@ const handleGh = (request, reply) => {
   console.log('handleGh');
   const withUser = (tokenData) => {
     return User.find(tokenData.uid).then((user) => {
-      return processGh(request, reply, user);
+      return initHubState(user).then((hub) => {
+        processGh(request, reply, hub, user);
+      });
     }, () => { return requireConfiguration(request, reply); });
   }
   const withoutUser = () => {
