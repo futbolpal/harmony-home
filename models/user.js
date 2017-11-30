@@ -46,6 +46,25 @@ const instantiateUser = (id, data) => {
   return user;
 }
 
+User.all = () => {
+  const d = Q.defer();
+  RedisClient.client().keys('users:*', (error, keys) => {
+    let chain = RedisClient.client().batch();
+    keys.forEach((k) => { 
+      chain.get(k);
+    });
+    chain.exec(function(error, replies) {
+      if(error) d.reject(error);
+      let users = replies.map((r, i) => { 
+        let id = keys[i].split(":")[1];
+        return instantiateUser(id, JSON.parse(r))
+      })
+      d.resolve(users);
+    });
+  });
+  return d.promise;
+}
+
 User.find = (id) => {
   return retrieveUser(id)
 }
