@@ -41,19 +41,9 @@ const instantiateUser = (id, data) => {
     return Object.assign(user.attributes.handlerData[handler], data);
   }
 
-  user.setDevices = (devices) => {
-    user.attributes.devices = devices;
-    console.log('user',user);
-  }
-
-  user.setHubState = (hubState) => {
-    user.attributes.hubState = hubState;
-  }
-
-  user.save = () => {
-    writeUser(user.id, user.attributes);
-    console.log('wrote user data', user.id, user.attributes);
-  }
+  user.setDevices = (devices) => { user.attributes.devices = devices; }
+  user.setHubState = (hubState) => { user.attributes.hubState = hubState; }
+  user.save = () => { writeUser(user.id, user.attributes) }
  
   return user;
 }

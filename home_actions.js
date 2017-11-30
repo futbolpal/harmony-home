@@ -75,9 +75,7 @@ const handleGh = (request, reply) => {
   console.log('handleGh');
   const withUser = (tokenData) => {
     return User.find(tokenData.uid).then((user) => {
-      console.log('user', user);
       let ip = user.attributes.hubState.ip;
-      console.log("IP", ip);
       return HubState.init(ip).then((hub) => {
         processGh(request, reply, hub, user);
       });
