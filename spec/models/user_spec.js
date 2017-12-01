@@ -6,9 +6,29 @@ const Q = require ('q');
 
 const redis = require('mock-redis-client').createMockRedis().createClient();
 
+const stubResolvedPromise = (resolveWith) => {
+  return () => {
+    let d = Q.defer();
+    d.resolve(resolveWith);
+    return d.promise;
+  }
+}
+const stubRejectedPromise = (rejectWith) => {
+  return () => {
+    let d = Q.defer();
+    d.reject(rejectWith);
+    return d.promise;
+  }
+}
+let execError = null;
+let execReplies = [];
 const uut = rewire('../../models/user')
 uut.__set__("RedisClient", {
   client : () => {
+    redis.batch = function() { return redis; }
+    redis.exec = (cb) => { 
+      cb(execError, execReplies) 
+    }
     return redis;
   }
 });
@@ -22,6 +42,59 @@ describe("User", function() {
 
   afterEach(function(){
     sandbox.restore();
+  });
+
+  describe(".all", function(){
+    let keys = [];
+    let userIds = [];
+
+    beforeEach(function(){
+        sandbox.stub(redis, "keys").callsFake((pattern, cb) => { cb(null, keys) })
+    });
+
+    it("returns a promise", function(){
+      expect(uut.all()).toBePromise();
+    });
+
+    describe("when resolved with no users", function(){
+      beforeEach(function(){
+        keys = [];
+        execReplies = [];
+      });
+
+      it("returns an empty array when there are no users", function(done){
+        uut.all().then((users) => {
+          expect(users).toEqual([]);
+          done();
+        });
+      });
+    });
+
+    describe("when resolved with users", function(){
+      beforeEach(function(){
+        userIds = ['my-id'];
+        keys = userIds.map((id) => { return `users:${id}` })
+        execReplies = userIds.map((id) => { return "{}" })
+      });
+
+      it("calls 'get' for each returned key", function(done){
+        let getSpy = sandbox.spy(redis, "get");
+        uut.all().then(() => {
+          expect(getSpy.callCount).toBe(keys.length);
+          done();
+        });
+      });
+
+      it("returns an array of users when they exist", function(done){
+        uut.all().then((users) => {
+          expect(users.length).toEqual(keys.length);
+          users.forEach((user, index) => {
+            expect(user.id).toEqual(userIds[index]);
+          });
+          done();
+        });
+      });
+    });
   });
 
   describe(".find", function() {
