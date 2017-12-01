@@ -225,11 +225,30 @@ describe("User", function() {
         expect(instantiatedUser.attributes.devices).toEqual([mockDevice]);
       });
     });
+
     describe(".setHubState", function(){
       let mockHubState = { x: 'y' }
       it("updates the devices attribute", function(){
         instantiatedUser.setHubState(mockHubState);
         expect(instantiatedUser.attributes.hubState).toEqual(mockHubState);
+      });
+    });
+
+    describe(".setHandlerData", function(){
+      let mockHandler = 'mock-handler';
+      let mockHandlerData = { x: 'y' }
+      it("updates the handler data", function(){
+        instantiatedUser.setHandlerData(mockHandler, mockHandlerData);
+        expect(instantiatedUser.attributes.handlerData[mockHandler]).toEqual(mockHandlerData);
+      });
+    });
+
+    describe(".getHandlerData", function(){
+      let mockHandler = 'mock-handler';
+      let mockHandlerData = { x: 'y' }
+      it("updates the handler data", function(){
+        instantiatedUser.setHandlerData(mockHandler, mockHandlerData);
+        expect(instantiatedUser.getHandlerData(mockHandler)).toEqual(mockHandlerData);
       });
     });
 

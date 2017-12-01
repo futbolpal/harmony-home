@@ -36,9 +36,10 @@ const instantiateUser = (id, data) => {
   };
 
   user.setHandlerData = (handler, data) => {
-    if(!user.attributes.handlerData) { user.attributes.handlerData = { handler: {} } }
-    if(!user.attributes.handlerData[handler]) { user.attributes.handlerData[handler] = {} }
-    return Object.assign(user.attributes.handlerData[handler], data);
+    user.attributes.handlerData = user.attributes.handlerData || {};
+    return user.attributes.handlerData[handler] = Object.assign(
+        user.attributes.handlerData[handler] || {}, data
+        );
   }
 
   user.setDevices = (devices) => { user.attributes.devices = devices; }
