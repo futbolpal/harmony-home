@@ -150,10 +150,53 @@ describe("HubState", function() {
       expect(uut.init('my-ip')).toBePromise();
     });
 
-    describe("when hub fails to initialize", function(){
+    xdescribe("when hub fails to initialize", function(){
+      beforeEach(function(){
+      });
     });
 
     describe("when hub initializes", function(){
+      let hubResponse = {};
+      let devices = [];
+      let ip = 'my-ip';
+      let listDevicesStub;
+
+      beforeEach(function(){
+        let MockHarmonyUtils = function() { return stubResolvedPromise(hubResponse)(); }
+        listDevicesStub = sinon.stub().callsFake(stubResolvedPromise(devices));
+        uut.__set__("HarmonyUtils", MockHarmonyUtils);
+        uut.__set__("listDevices", listDevicesStub);
+      });
+
+      it("lists devices", function(done){
+        uut.init(ip).then(() => { 
+          expect(listDevicesStub.calledOnce).toBeTrue();
+          done();
+        });
+      });
+
+      describe("resolving final promise", function(){
+        it("sets initialized to true", function(done){
+          uut.init(ip).then((hub) => { 
+            expect(hub.initialized).toBeTrue();
+            done();
+          });
+        });
+
+        it("sets the state.devices", function(done){
+          uut.init(ip).then((hub) => { 
+            expect(hub.state.devices).toEqual(devices);
+            done();
+          });
+        });
+
+        it("sets _hub", function(done){
+          uut.init(ip).then((hub) => { 
+            expect(hub._hub).toEqual(hubResponse);
+            done();
+          });
+        });
+      });
     });
   });
 }); 
