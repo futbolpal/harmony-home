@@ -22,10 +22,10 @@ Intents.INTENT_GROUP_TV_CONTROL = [
   Intents.INTENT_TV_CONTROL_MUTE         ,
 ];
 
-const handleTvControl = (hubState, context, request, reply) => {
-  let {intent, user, conversationToken} = context;
+const handleTvControl = (context, request, reply) => {
+  let {hubState, intent, user, conversationToken} = context;
   let intentName = intent.intent;
-
+  
   let deviceConfiguration = user.deviceByHandler(HandlerName);
   let device = hubState.deviceByName(deviceConfiguration.name);
   let commands = deviceConfiguration.commands;

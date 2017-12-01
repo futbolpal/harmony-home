@@ -30,20 +30,42 @@ const instantiateUser = (id, data) => {
     return user.attributes.devices.find((d) => { return d.handler == handler }) || null;
   }
 
-  user.setDevices = (devices) => {
-    user.attributes.devices = devices;
-    console.log('user',user);
+  user.getHandlerData = (handler) => {
+    user.attributes.handlerData = user.attributes.handlerData || {};
+    return user.attributes.handlerData[handler] || {};
+  };
+
+  user.setHandlerData = (handler, data) => {
+    user.attributes.handlerData = user.attributes.handlerData || {};
+    return user.attributes.handlerData[handler] = Object.assign(
+        user.attributes.handlerData[handler] || {}, data
+        );
   }
 
-  user.setHubState = (hubState) => {
-    user.attributes.hubState = hubState;
-  }
-
-  user.save = () => {
-    writeUser(user.id, user.attributes);
-  }
+  user.setDevices = (devices) => { user.attributes.devices = devices; }
+  user.setHubState = (hubState) => { user.attributes.hubState = hubState; }
+  user.save = () => { writeUser(user.id, user.attributes) }
  
   return user;
+}
+
+User.all = () => {
+  const d = Q.defer();
+  RedisClient.client().keys('users:*', (error, keys) => {
+    let chain = RedisClient.client().batch();
+    keys.forEach((k) => { 
+      chain.get(k);
+    });
+    chain.exec(function(error, replies) {
+      if(error) d.reject(error);
+      let users = replies.map((r, i) => { 
+        let id = keys[i].split(":")[1];
+        return instantiateUser(id, JSON.parse(r))
+      })
+      d.resolve(users);
+    });
+  });
+  return d.promise;
 }
 
 User.find = (id) => {

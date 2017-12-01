@@ -33,4 +33,3 @@ Configuration.register(server);
 server.listen(server.get('port'));
 
 RedisClient.client();
-HubState.init();

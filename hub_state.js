@@ -4,99 +4,85 @@ const Q = require('q');
 const HarmonyUtils = require('harmony-hub-util');
 const RedisClient = require('./redis_client')
 
-const hubState = {
-  hub : null,
-  state : {
-    simulate : false,
-    climate_control : {
-      online : false,
-      temp : 70
-    },
-  }
-};
-
-hubState.executeCommand = (is_device_cmd, act_or_dev_name, command) => {
-  if(hubState.state.simulate){
+const executeCommand = (hubState, simulate, is_device_cmd, act_or_dev_name, command) => {
+  if(simulate){
     console.log("Simulating command: ",is_device_cmd, act_or_dev_name, command);
     return new Promise((resolve, reject) =>{
       resolve("Simulated command");
     });
   } else {
     console.log("Sending command: ",is_device_cmd, act_or_dev_name, command);
-    return hubState.hub.executeCommand(is_device_cmd, act_or_dev_name, command);
-  }
-}
- 
-hubState.refresh = () => {
-  let deferred = Q.defer();
-
-  if(!hubState.hub){
-    deferred.reject("Hub not initialized");
-  } else {
-    hubState.hub._harmonyClient.getAvailableCommands().then(function(response){
-      hubState.state.devices = response.device; 
-      hubState.save();
-      deferred.resolve();
-    });
-  }
-  return deferred.promise;
-};
-
-hubState.load = () => {
-  if(RedisClient.client().connected){
-    RedisClient.client().get("hubState", (error, reply) => {
-      hubState.state = Object.assign({}, hubState.state, JSON.parse(reply));
-      console.log("Configuration Loaded");
-    });
-  } else {
-    console.log("Redis not connected yet");
+    return hubState.executeCommand(is_device_cmd, act_or_dev_name, command);
   }
 }
 
-hubState.save = () => {
-  if(RedisClient.client().connected){
-    RedisClient.client().set("hubState", JSON.stringify(hubState.state));
-  } else {
-    console.log("Redis not connected");
-  }
-};
-
-hubState.deviceById = (deviceId) => {
-  return hubState.state.devices.find(function (dev) {
+const deviceById = (hub, deviceId) => {
+  return hub.state.devices.find(function (dev) {
     if (dev.id.toString() == deviceId) {
       return dev;
     }
-  });
+  }) || null;
 }
 
-hubState.deviceByName = (deviceName) => {
-  return hubState.state.devices.find(function (dev) {
+const deviceByName = (hub, deviceName) => {
+  return hub.state.devices.find(function (dev) {
     if (dev.label == deviceName) {
       return dev;
     }
-  });
+  }) || null;
 }
 
-hubState.forceDefaultRemote = () => {
-  hubState.hub.readCurrentActivity().then((response) => { 
+const forceDefaultRemote = (hub) => {
+  let d = Q.defer();
+  hub.readCurrentActivity().then((response) => { 
+    console.log('current activity', response);
     if(response == 'PowerOff'){
-      console.log("Activity was " + response) 
-        hubState.hub.executeActivity('Default').then((response) => { console.log(response) });;
+      console.log("Activity was " + response);
+      hub.executeActivity('Default').then((response) => { 
+        console.log(response); 
+        d.resolve(response);
+      });
+    } else {
+      d.reject();
     }
   });
+  return d.promise;
 }
 
-hubState.init = () => {
-  // Connect to harmony
-  new HarmonyUtils(process.env.IP || '192.168.0.23').then((hutils) => {
-    console.log("Connected to harmony hub");
-    hubState.hub = hutils
+const listDevices = (hub) => {
+  return hub._harmonyClient.getAvailableCommands().then(function(response){
+    return response.device; 
+  }); 
+}
 
-    hubState.refresh();
-    setInterval(hubState.refresh, process.env.REFRESH_HUB || 60000); 
-    setInterval(hubState.forceDefaultRemote, 5000);
-
+const init = (ip) => {
+  const d = Q.defer();
+  const h = {
+    initialized: false,
+    ip: ip,
+    state: {},
+    deviceById: (id) => { 
+      return deviceById(h, id) 
+    },
+    deviceByName: (name) => { 
+      return deviceByName(h, name) 
+    },
+    forceDefaultRemote: () => {
+      return forceDefaultRemote(h._hub);
+    },
+    executeCommand: (is_device_cmd, act_or_dev_name, command) => { 
+      return executeCommand(h._hub, h.simulate, is_device_cmd, act_or_dev_name, command);
+    }
+  }
+  new HarmonyUtils(ip).then((hub) => {
+    listDevices(hub).then((devices) => {
+      h.initialized = true;
+      h.state.devices = devices;
+      h._hub = hub;
+      d.resolve(h);
+    });
   });
+  return d.promise;
 }
 
-module.exports = hubState;
+module.exports = { init: init };

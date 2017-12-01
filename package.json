@@ -31,6 +31,7 @@
     "jasmine": "2.8.0",
     "jasmine-expect": "3.8.1",
     "jasmine-matchers": "0.2.3",
+    "jasmine-promise-matchers": "2.4.0",
     "jasmine-spec-reporter": "4.2.1",
     "jasmine2-custom-message": "0.8.4",
     "md5": "2.2.1",

@@ -10,6 +10,7 @@ const redis = require('mock-redis-client').createMockRedis().createClient();
 const OAuth = require('../services/oauth');
 const User = require('../models/user');
 const Intents = require('../intents');
+const HubState = require('../hub_state');
 
 const uut = rewire('../home_actions')
 uut.__set__("RedisClient", {
@@ -156,7 +157,8 @@ describe("HomeActions", function() {
       describe("when the user is configured", function() {
         let processGhStub;
         let restoreProcessGh;
-        let userData = {};
+        let userData = {attributes: {hubState: {ip: 'some-ip'}}};
+        let hubState = {};
 
         beforeEach(function(){
           processGhStub = sandbox.stub();
@@ -167,13 +169,19 @@ describe("HomeActions", function() {
             d.resolve(userData);
             return d.promise;
           });
+
+          sandbox.stub(HubState, "init").callsFake((ip) => {
+            const d = Q.defer();
+            d.resolve(hubState);
+            return d.promise;
+          });
         });
 
         afterEach(function(){
           restoreProcessGh();
         });
  
-        it("calls proessGh with a valid user", function(done){
+        it("calls processGh with a valid user", function(done){
           handleGh(request, reply).then(() => {
             expect(processGhStub.calledOnce).toBeTrue();
             done();

@@ -28,8 +28,8 @@ Intents.INTENT_GROUP_CLIMATE_CONTROL = [
   Intents.INTENT_CLIMATE_CONTROL_POWER_ON     
 ];
 
-const handleClimateControl = (hubState, context, request, reply) => {
-  let {intent, user, conversationToken} = context;
+const handleClimateControl = (context, request, reply) => {
+  let {hubState, intent, user, conversationToken} = context;
   let intentName = intent.intent;
 
   let deviceConfiguration = user.deviceByHandler(HandlerName);
@@ -58,7 +58,8 @@ const handleClimateControl = (hubState, context, request, reply) => {
   }
   return commandPromise.then((response) => {
     if(typeof(intentResponse) === 'function'){
-      return intentResponse(hubState, conversationToken, intent, request, reply, device, deviceConfiguration);
+      let response = intentResponse(hubState, user, intent, device, deviceConfiguration);
+      return reply.json(HomeActions.createSimpleReply(conversationToken, response));
     } else {
       return reply.json(HomeActions.createSimpleReply(conversationToken, intentResponse));
     }
@@ -80,45 +81,51 @@ const adjustTemperature = (hubState, device, deviceConfig, amount, delay = 750) 
   let command = amount > 0 ? deviceConfig.commands.UP : deviceConfig.commands.DOWN;
   return HomeActions.repeatCommands(Math.abs(amount), delay, () =>{
     return hubState.executeCommand(true, device.label, command) 
-  }).then(() => {;
-    hubState.state.climate_control.temp += amount
+  }).then(() => {
+    let temp = user.getHandlerData(HandlerName).temp;
+    user.setHandlerData(HandlerName, {temp: temp + amount});
+    user.save();
   });
 }
 
 ///
 // Handler Methods
 //
-const handleSetTemperature = (hubState, conversationToken, intent, request, reply, device, deviceConfig) => {
-  reply(HomeActions.createSimpleReply(conversationToken, "Ok"));
+const handleSetTemperature = (hubState, user, intent, device, deviceConfig) => {
   let target_temp = argsTemperature(intent);
-  let diff = hubState.state.climate_control.temp - target_temp;
-  return adjustTemperature(hubState, device, deviceConfig, diff);
+  let diff = user.getHandlerData(HandlerName).temp - target_temp;
+  adjustTemperature(hubState, device, deviceConfig, diff);
+  return "Ok";
 }
 
-const handleAdjustTemperature = (hubState, conversationToken, intent, request, reply, device, deviceConfig) => {
-  reply.json(HomeActions.createSimpleReply(conversationToken, "Ok"));
+const handleAdjustTemperature = (hubState, user, intent, device, deviceConfig) => {
   let amount = argsTemperature(intent);
   if(queryContains(intent, "down")){
     amount *= -1;
   }
-  return adjustTemperature(hubState, device, deviceConfig, amount);
+  adjustTemperature(hubState, device, deviceConfig, amount);
+  return "Ok";
 }
 
-const handleTogglePower = (hubState, conversationToken, intent, request, reply, device) => {
-  hubState.state.climate_control.online = !hubState.state.climate_control.online;
-  return reply.json(HomeActions.createSimpleReply(conversationToken, "Ok"));
+const handleTogglePower = (hubState, user, intent, device) => {
+  let online = user.getHandlerData(HandlerName).online;
+  user.setHandlerData(HandlerName, { online: !online });
+  user.save();
+  return "Ok";
 }
 
-const handleSetStatus = (hubState, conversationToken, intent, request, reply, device) => {
+const handleSetStatus = (hubState, user, intent, device) => {
   let current_temp = argsTemperature(intent);
   let status = "The current temperature is " + current_temp + " degrees";
-  hubState.state.climate_control.temp = current_temp;
-  return reply.json(HomeActions.createSimpleReply(conversationToken, status));
+  user.setHandlerData(HandlerName, { temp: current_temp });
+  user.save();
+  return status;
 }
 
-const handleReadStatus = (hubState, conversationToken, intent, request, reply, device) => {
-  let status = "The current temperature is " + hubState.state.climate_control.temp + " degrees";
-  return reply.json(HomeActions.createSimpleReply(conversationToken, status));
+const handleReadStatus = (hubState, user, intent, device) => {
+  let current_temp = user.getHandlerData(HandlerName).temp;
+  let status = "The current temperature is " + temp + " degrees";
+  return status;
 }
 
 module.exports = handleClimateControl;
