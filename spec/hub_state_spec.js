@@ -176,6 +176,13 @@ describe("HubState", function() {
       });
 
       describe("resolving final promise", function(){
+        it("has an ip property", function(done){
+          uut.init(ip).then((hub) => { 
+            expect(hub.ip).toEqual(ip);
+            done();
+          });
+        });
+
         it("sets initialized to true", function(done){
           uut.init(ip).then((hub) => { 
             expect(hub.initialized).toBeTrue();
@@ -194,6 +201,70 @@ describe("HubState", function() {
           uut.init(ip).then((hub) => { 
             expect(hub._hub).toEqual(hubResponse);
             done();
+          });
+        });
+
+        describe(".deviceById", function(){
+          let deviceByIdStub;
+          beforeEach(function(){
+            deviceByIdStub = sandbox.stub();
+            uut.__set__("deviceById", deviceByIdStub);
+          });
+
+          it("calls #deviceById", function(done){
+            uut.init(ip).then((hub) => { 
+              hub.deviceById('123');
+              expect(deviceByIdStub.withArgs(hub, '123').calledOnce).toBeTrue();
+              done();
+            });
+          });
+        });
+
+        describe(".deviceByName", function(){
+          let deviceByNameStub;
+          beforeEach(function(){
+            deviceByNameStub = sandbox.stub();
+            uut.__set__("deviceByName", deviceByNameStub);
+          });
+
+          it("calls #deviceByName", function(done){
+            uut.init(ip).then((hub) => { 
+              hub.deviceByName('123');
+              expect(deviceByNameStub.withArgs(hub, '123').calledOnce).toBeTrue();
+              done();
+            });
+          });
+        });
+
+        describe(".forceDefaultRemote", function(){
+          let forceDefaultRemoteStub;
+          beforeEach(function(){
+            forceDefaultRemoteStub = sandbox.stub();
+            uut.__set__("forceDefaultRemote", forceDefaultRemoteStub);
+          });
+
+          it("calls #forceDefaultRemote", function(done){
+            uut.init(ip).then((hub) => { 
+              hub.forceDefaultRemote();
+              expect(forceDefaultRemoteStub.withArgs(hub._hub).calledOnce).toBeTrue();
+              done();
+            });
+          });
+        });
+
+        describe(".executeCommand", function(){
+          let executeCommandStub;
+          beforeEach(function(){
+            executeCommandStub = sandbox.stub();
+            uut.__set__("executeCommand", executeCommandStub);
+          });
+
+          it("calls #executeCommandStub", function(done){
+            uut.init(ip).then((hub) => { 
+              hub.executeCommand(true, 'TV', 'PowerOff');
+              expect(executeCommandStub.withArgs(hub._hub, undefined, true, 'TV', 'PowerOff').calledOnce).toBeTrue();
+              done();
+            });
           });
         });
       });
