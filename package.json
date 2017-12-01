@@ -4,7 +4,8 @@
   "main": "server.js",
   "scripts": {
     "test": "istanbul cover --include-all-sources jasmine",
-    "watch:test": "nodemon --exec 'npm test'"
+    "watch:test": "nodemon --exec 'npm test'",
+    "work": "node ./force_remote.js"
   },
   "author": "",
   "license": "ISC",
