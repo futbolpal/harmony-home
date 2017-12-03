@@ -255,7 +255,23 @@ const actionPackage = {
         }
       },
       "signInRequired": true
-    }
+    },
+    {
+      "name": "com.harmony-home.win.wol",
+      "fulfillment": {
+        "conversationName": "harmony-home"
+      },
+      "intent": {
+        "name" : "com.harmony-home.intent.win.wol",
+        "trigger":{
+          "queryPatterns" : [
+            "wake (up)? (the)? pc",
+            "wake (up)? (the)? computer"
+          ]
+        }
+      },
+      "signInRequired": true
+    },
 	],
 	"conversations": {
 		"harmony-home": {
