@@ -9,6 +9,7 @@ const HubState = require('./hub_state');
 const Intents = require('./intents');
 const ClimateControl = require('./handlers/climate_control');
 const TvControl = require('./handlers/tv_control');
+const WinControl = require('./handlers/win_control');
 const User       = require('./models/user');
 const OAuth       = require('./services/oauth');
 
@@ -66,7 +67,11 @@ const processGh = (request, reply, hubState, user) => {
     } else if(Intents.INTENT_GROUP_TV_CONTROL.includes(intent.intent)){
       console.log('tv_control');
       return TvControl(context, request, reply);
+    } else if(Intents.INTENT_GROUP_WIN_CONTROL.includes(intent.intent)){
+      console.log('win_control');
+      return WinControl(context, request, reply);
     }
+ 
   }
   return reply.json(HomeActionsHelper.createSimpleReply(conversationToken, 'OK'));
 }
