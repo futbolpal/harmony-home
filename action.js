@@ -255,15 +255,6 @@ const actionPackage = {
         }
       },
       "signInRequired": true
-    },
-    {
-      "name": "actions.devices",
-      "deviceControl": {
-      },
-      "fulfillment": {
-        "conversationName": "automation"
-      },
-      "signInRequired": true
     }
 	],
 	"conversations": {
@@ -271,11 +262,6 @@ const actionPackage = {
 			"name": "harmony-home",
 			"url": process.env.DEPLOY_DOMAIN + "/gh",
 			"fulfillmentApiVersion": 2
-		},
-		"automation" :
-		{
-			"name": "automation",
-			"url": process.env.DEPLOY_DOMAIN + "/ha"
 		}
 	},
 	"accountLinking" : {
