@@ -124,7 +124,7 @@ const handleSetStatus = (hubState, user, intent, device) => {
 
 const handleReadStatus = (hubState, user, intent, device) => {
   let current_temp = user.getHandlerData(HandlerName).temp;
-  let status = "The current temperature is " + temp + " degrees";
+  let status = "The current temperature is " + current_temp + " degrees";
   return status;
 }
 
