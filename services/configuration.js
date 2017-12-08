@@ -27,7 +27,8 @@ Configuration.register = (server) => {
         return reply.render('configuration', {
           accessToken: accessToken,
           devices: JSON.stringify(user.attributes.devices),
-          hubState: JSON.stringify(user.attributes.hubState)
+          hubState: JSON.stringify(user.attributes.hubState),
+          handlerData: JSON.stringify(user.attributes.handlerData)
         });
       });
     }
@@ -42,10 +43,16 @@ Configuration.register = (server) => {
       User.find(tokenData.uid).then((user) => {
         let hubState = JSON.parse(request.body.hub_state);
         let devices = JSON.parse(request.body.devices);
+        let handlerData = JSON.parse(request.body.handler_data);
         let redirect = util.format('/configuration?accessToken=%s', accessToken);
                
         user.setHubState(hubState);
         user.setDevices(devices);
+        user.attributes = Object.assign(user.attributes,{
+          handlerData,
+          hubState,
+          devices
+        });
         user.save();
 
         return reply.redirect(redirect);

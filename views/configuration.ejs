@@ -11,6 +11,7 @@
   <form id="configuration-post" action="/configuration" method="post">
     <input type="hidden" name="access_token" value="<%= accessToken %>" />
     <textarea name="hub_state" style="width:100%"><%= hubState %></textarea>
+    <textarea name="handler_data" style="width:100%"><%= handlerData %></textarea>
     <textarea name="devices" style="width:100%"><%= devices %></textarea>
     <input type="submit" />
   </form>
