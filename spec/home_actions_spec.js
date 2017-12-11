@@ -55,34 +55,45 @@ describe("HomeActions", function() {
   describe("processGh", function() {
     let processGh = uut.__get__("processGh");
     let user = {};
-    let climateControlStub, tvControlStub;
-    let restoreTvControl, restoreClimateControl;
+    let climateControlStub, tvControlStub, winControlStub;
 
     beforeEach(function() {
       tvControlStub = sandbox.stub();
       climateControlStub = sandbox.stub();
-      restoreClimateControl = uut.__set__("ClimateControl", climateControlStub);
-      restoreTvControl = uut.__set__("TvControl", tvControlStub);
+      winControlStub = sandbox.stub();
+      uut.__set__("ClimateControl", climateControlStub);
+      uut.__set__("TvControl", tvControlStub);
+      uut.__set__("WinControl", winControlStub);
     });
 
     afterEach(function(){
-      restoreTvControl();
-      restoreClimateControl();
+      sandbox.restore();
     });
 
     it("delegates to climate handler when intent is one within the climate handler", function(){
-      let climateIntent = { intent: Intents.INTENT_CLIMATE_CONTROL_UP }
+      Intents.INTENT_GROUP_CLIMATE_CONTROL = ['climate-intent'];
+      let climateIntent = { intent: 'climate-intent' }
       request.body.inputs = [ climateIntent ];
       processGh(request, reply, user);
       expect(climateControlStub.calledOnce).toBeTrue();
     });
 
     it("delegates to tv handler when intent is one within the tv handler", function(){
-      let tvIntent = { intent: Intents.INTENT_TV_CONTROL_POWER_ON }
+      Intents.INTENT_GROUP_TV_CONTROL = ['tv-intent'];
+      let tvIntent = { intent: 'tv-intent' }
       request.body.inputs = [ tvIntent ]
       processGh(request, reply, user);
       expect(tvControlStub.calledOnce).toBeTrue();
     });
+
+    it("delegates to win handler when intent is one within the tv handler", function(){
+      Intents.INTENT_GROUP_WIN_CONTROL = ['win-intent'];
+      let winIntent = { intent: 'win-intent' }
+      request.body.inputs = [ winIntent ]
+      processGh(request, reply, user);
+      expect(winControlStub.calledOnce).toBeTrue();
+    });
+
 
     it("answers with a simple response when intent cannot be handled", function(){
     });
