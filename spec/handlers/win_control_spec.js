@@ -28,8 +28,27 @@ describe('WinControl', function () {
   });
   
   describe("private methods", function(){
-    describe("#handlwWinControl", function(){
+    describe("#handleWol", function(){
+      let handleWol = uut.__get__("handleWol");
+      let hubState = { ip: 'my-ip' }
+      let device = { mac: 'my-mac' }
+      let wakeStub;
 
+      beforeEach(function(){
+        wakeStub = sandbox.stub();
+        uut.__set__("Wol", { wake: wakeStub });
+      });
+
+      afterEach(function(){
+      }); 
+
+      it("is called with the right mac and ip address", function(){
+        handleWol(hubState, device);
+        expect(wakeStub.withArgs(device.mac, {address: hubState.ip}).calledOnce).toBeTrue();
+      });
+    });
+
+    describe("#handlwWinControl", function(){
       let handleWinControl = uut.__get__("handleWinControl");
       let createSimpleReplyStub;
 

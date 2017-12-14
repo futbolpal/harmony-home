@@ -31,7 +31,8 @@ Configuration.register(server);
 
 // Start the server
 server.listen(server.get('port'));
+server.get('/', (req, res) => { res.render('index') });
 server.get("/privacy", (req, res) => { res.render('privacy') })
 server.get("/terms", (req, res) => { res.render('terms') })
- 
+
 RedisClient.client();
