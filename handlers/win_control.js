@@ -27,8 +27,6 @@ const handleWinControl = (context, request, reply) => {
   let intentName = intent.intent;
   
   let deviceConfiguration = user.deviceByHandler(HandlerName);
-  let device = hubState.deviceByName(deviceConfiguration.name);
-  let commands = deviceConfiguration.commands;
 
   if(!intentMap[intentName]) { 
     return reply.json(createSimpleReply(
@@ -39,7 +37,7 @@ const handleWinControl = (context, request, reply) => {
 
   let command = intentMap[intentName].command;
   let intentResponse = intentMap[intentName].response;
-  command(hubState, device);
+  command(hubState, deviceConfiguration);
   return reply.json(createSimpleReply(conversationToken, intentResponse));
 };
 
