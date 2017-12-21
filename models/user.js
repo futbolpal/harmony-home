@@ -30,6 +30,10 @@ const instantiateUser = (id, data) => {
     return user.attributes.devices.find((d) => { return d.handler == handler }) || null;
   }
 
+  user.deviceByName = (name) => {
+    return user.attributes.devices.find((d) => { return d.name == name }) || null;
+  }
+
   user.getHandlerData = (handler) => {
     user.attributes.handlerData = user.attributes.handlerData || {};
     return user.attributes.handlerData[handler] || {};
